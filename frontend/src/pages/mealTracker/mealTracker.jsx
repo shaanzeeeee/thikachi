@@ -14,6 +14,7 @@ import Stack from "@mui/material/Stack";
 import Button from '@mui/material/Button';
 import ROUTES from "../../routes";
 import { PieChart } from "@mui/x-charts/PieChart";
+import { motion, AnimatePresence } from "framer-motion";
 
 /* Styles for page */
 const useStyles = makeStyles((theme) => ({
@@ -298,7 +299,14 @@ const MealTracker = () => {
         const totalCalories = calories * servings;
 
         return (
-            <div key={id}>
+            <motion.div
+                key={id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.2 }}
+                layout
+            >
                 <Link to={ROUTES.FOOD_ITEM_INFO.replace(":foodItemHash", id)} className="link">
                     <ListItem component="div" sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: 1, paddingRight: 1, paddingTop: .5, paddingBottom: .5 }}>
                         <div>
@@ -311,7 +319,7 @@ const MealTracker = () => {
                     </ListItem>
                 </Link>
                 <Divider />
-            </div>
+            </motion.div>
         );
     }
 
@@ -330,10 +338,12 @@ const MealTracker = () => {
                     </h4>
                     <Box sx={{ width: 360, height: MEAL_LIST_HEIGHT, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
                         <Paper style={{ height: MEAL_LIST_HEIGHT, overflow: 'auto' }}>
-                            <List>
-                                {
-                                    foodItems.map((item) => buildListItem(item, BREAKFAST))
-                                }
+                            <List component={motion.ul} layout>
+                                <AnimatePresence initial={false}>
+                                    {
+                                        foodItems.map((item) => buildListItem(item, BREAKFAST))
+                                    }
+                                </AnimatePresence>
                             </List>
                         </Paper>
                     </Box>
@@ -348,10 +358,12 @@ const MealTracker = () => {
                     </h4>
                     <Box sx={{ width: 360, height: MEAL_LIST_HEIGHT, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
                         <Paper style={{ height: MEAL_LIST_HEIGHT, overflow: 'auto' }}>
-                            <List>
-                                {
-                                    foodItems.map((item) => buildListItem(item, LUNCH))
-                                }
+                            <List component={motion.ul} layout>
+                                <AnimatePresence initial={false}>
+                                    {
+                                        foodItems.map((item) => buildListItem(item, LUNCH))
+                                    }
+                                </AnimatePresence>
                             </List>
                         </Paper>
                     </Box>
@@ -366,10 +378,12 @@ const MealTracker = () => {
                     </h4>
                     <Box sx={{ width: 360, height: MEAL_LIST_HEIGHT, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
                         <Paper style={{ height: MEAL_LIST_HEIGHT, overflow: 'auto' }}>
-                            <List>
-                                {
-                                    foodItems.map((item) => buildListItem(item, DINNER))
-                                }
+                            <List component={motion.ul} layout>
+                                <AnimatePresence initial={false}>
+                                    {
+                                        foodItems.map((item) => buildListItem(item, DINNER))
+                                    }
+                                </AnimatePresence>
                             </List>
                         </Paper>
                     </Box>
@@ -384,10 +398,12 @@ const MealTracker = () => {
                     </h4>
                     <Box sx={{ width: 360, height: MEAL_LIST_HEIGHT, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
                         <Paper style={{ height: MEAL_LIST_HEIGHT, overflow: 'auto' }}>
-                            <List>
-                                {
-                                    foodItems.map((item) => buildListItem(item, SNACK))
-                                }
+                            <List component={motion.ul} layout>
+                                <AnimatePresence initial={false}>
+                                    {
+                                        foodItems.map((item) => buildListItem(item, SNACK))
+                                    }
+                                </AnimatePresence>
                             </List>
                         </Paper>
                     </Box>

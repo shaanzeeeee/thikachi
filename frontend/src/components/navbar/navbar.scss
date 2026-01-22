@@ -1,181 +1,222 @@
-/* Styling for navigation bar */
+/* Modern glassmorphism navbar */
 .navbar {
-    width: 100%;
-    color: white;
-    font-size: 14px;
     position: fixed;
     top: 0;
-    z-index: 999;
-    background: linear-gradient(to top, transparent 0%, rgb(0, 0, 0, 0.3) 50%);
+    left: 0;
+    right: 0;
+    height: 70px;
+    z-index: 1000;
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    transition: all var(--transition-base);
 
     &.scrolled {
-        background-color: var(--main-color);
+        background: rgba(10, 10, 15, 0.95);
+        box-shadow: var(--shadow-md);
     }
 
     .container {
-        padding: 0px 50px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 70px;
+        height: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 var(--space-xl);
+    }
 
-        .left {
-            display: flex;
-            align-items: center;
-            img { // logo
-                height: 50px;
-                margin-right: 40px;
-                margin-top: 5px;
+    .left {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+
+        img {
+            height: 42px;
+            width: auto;
+            margin-right: var(--space-md);
+            filter: drop-shadow(0 0 10px rgba(0, 212, 170, 0.3));
+            transition: filter var(--transition-base);
+
+            &:hover {
+                filter: drop-shadow(0 0 15px rgba(0, 212, 170, 0.5));
             }
+        }
 
-            span {
-                margin-right: 20px;
-                cursor: pointer;
-            }
-            
-            .dropdown {
-                .diningDropdownOptions {
-                    transform: translate(12.5%, 2.5%); // translate X and Y to fix centering of dropdown
-                    display: none;
-                    background-color: var(--main-color);
-                    border-radius: 5px;
-                }
+        >.link {
+            >span {
+                display: inline-block;
+                padding: var(--space-sm) var(--space-md);
+                font-size: var(--font-size-sm);
+                font-weight: 500;
+                color: var(--text-secondary);
+                border-radius: var(--radius-sm);
+                transition: all var(--transition-base);
+                position: relative;
 
-                .moreDiningDropdownOptions {
-                    transform: translate(7.5%, 5%); // translate X and Y to fix centering of dropdown
-                    display: none;
-                    background-color: var(--main-color);
-                    border-radius: 5px;
-                }
-
-                .nutritionDropdownOptions {
-                    transform: translate(7.5%, 5%); // translate X and Y to fix centering of dropdown
-                    display: none;
-                    background-color: var(--main-color);
-                    border-radius: 5px;
-                }
-
-                .fitnessDropdownOptions {
-                    transform: translate(7.5%, 12.5%); // translate X and Y to fix centering of dropdown
-                    display: none;
-                    background-color: var(--main-color);
-                    border-radius: 5px;
-                }
-
-                .healthDropdownOptions {
-                    transform: translate(7.5%, 12.5%); // translate X and Y to fix centering of dropdown
-                    display: none;
-                    background-color: var(--main-color);
-                    border-radius: 5px;
-                }
-
-                .link {
-                    padding: 10px 0px;
-                    margin-right: 0px;
-                    cursor: pointer;
-                    // display: inline;
-                }
-                
-                span {
-                    padding: 10px;
-                    margin-right: 0px;
-                    cursor: pointer;
-                }
-
-                .link {
-                    &:hover {
-                        background-color: goldenrod;
-                        border-radius: 5px;
-                    }
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    width: 0;
+                    height: 2px;
+                    background: var(--accent-gradient);
+                    transition: all var(--transition-base);
+                    transform: translateX(-50%);
                 }
 
                 &:hover {
-                    .diningDropdownOptions {
-                        display: flex;
-                        flex-direction: column;
-                        position: absolute;
-                        // top: 50px; // moves dropdown a bit further down
-                    }
+                    color: var(--text-primary);
 
-                    .moreDiningDropdownOptions {
-                        display: flex;
-                        flex-direction: column;
-                        position: absolute;
-                        // top: 50px; // moves dropdown a bit further down
-                    }
-
-                    .nutritionDropdownOptions {
-                        display: flex;
-                        flex-direction: column;
-                        position: absolute;
-                        // top: 50px; // moves dropdown a bit further down
-                    }
-
-                    .fitnessDropdownOptions {
-                        display: flex;
-                        flex-direction: column;
-                        position: absolute;
-                        // top: 50px; // moves dropdown a bit further down
-                    }
-
-                    .healthDropdownOptions {
-                        display: flex;
-                        flex-direction: column;
-                        position: absolute;
-                        // top: 50px; // moves dropdown a bit further down
+                    &::after {
+                        width: 70%;
                     }
                 }
             }
         }
+    }
 
-        .right {
-            display: flex;
-            align-items: center;
+    .dropdown {
+        position: relative;
+        cursor: pointer;
 
-            .icon {
-                margin: 0px 15px;
-                cursor: pointer;
+        >span {
+            display: inline-block;
+            padding: var(--space-sm) var(--space-md);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-base);
+
+            &:hover {
+                color: var(--text-primary);
             }
+        }
 
-            img {
-                width: 30px;
-                height: 30px;
-                border-radius: 5px;
-                object-fit: cover;
-                cursor: pointer;
-            }
+        .healthDropdownOptions,
+        .fitnessDropdownOptions,
+        .nutritionDropdownOptions,
+        .diningDropdownOptions,
+        .moreDiningDropdownOptions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            padding: var(--space-sm);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all var(--transition-base);
 
-            .profile {
-                .options {
-                    display: none;
-                    background-color: var(--main-color);
-                    border-radius: 5px;
-                }
-
-                .link {
-                    padding: 10px 0px;
-                    margin-right: 0px;
-                    cursor: pointer;
-                    // display: inline;
-
-                    &:hover {
-                        background-color: goldenrod;
-                        border-radius: 5px;
-                    }
-                }
+            .link {
+                display: block;
 
                 span {
-                    padding: 10px;
-                    cursor: pointer;
-                }
+                    display: block;
+                    padding: var(--space-sm) var(--space-md);
+                    font-size: var(--font-size-sm);
+                    color: var(--text-secondary);
+                    border-radius: var(--radius-sm);
+                    transition: all var(--transition-fast);
 
-                &:hover {
-                    .options {
-                        display: flex;
-                        flex-direction: column;
-                        position: absolute;
+                    &:hover {
+                        background: var(--bg-glass-hover);
+                        color: var(--accent-primary);
+                        padding-left: var(--space-lg);
                     }
                 }
+
+                .highlight {
+                    color: var(--accent-primary);
+                    font-weight: 500;
+                }
+            }
+        }
+
+        &:hover {
+
+            .healthDropdownOptions,
+            .fitnessDropdownOptions,
+            .nutritionDropdownOptions,
+            .diningDropdownOptions,
+            .moreDiningDropdownOptions {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+        }
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+
+        .profile {
+            position: relative;
+            cursor: pointer;
+
+            .icon {
+                color: var(--text-secondary);
+                font-size: 28px;
+                padding: var(--space-sm);
+                border-radius: var(--radius-sm);
+                transition: all var(--transition-base);
+
+                &:hover {
+                    color: var(--accent-primary);
+                    background: var(--bg-glass);
+                }
+            }
+
+            .options {
+                position: absolute;
+                top: 100%;
+                right: 0;
+                min-width: 160px;
+                padding: var(--space-sm);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(10px);
+                transition: all var(--transition-base);
+
+                .link {
+                    display: block;
+
+                    span {
+                        display: block;
+                        padding: var(--space-sm) var(--space-md);
+                        font-size: var(--font-size-sm);
+                        color: var(--text-secondary);
+                        border-radius: var(--radius-sm);
+                        transition: all var(--transition-fast);
+
+                        &:hover {
+                            background: var(--bg-glass-hover);
+                            color: var(--accent-primary);
+                        }
+
+                        &.highlight {
+                            color: var(--text-primary);
+                        }
+                    }
+                }
+            }
+
+            &:hover .options {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
             }
         }
     }

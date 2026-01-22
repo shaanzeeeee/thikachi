@@ -6,10 +6,10 @@ import "./popular.scss";
 import axios from "axios";
 import { useRef } from "react";
 import {
-	Box,
-	List,
-	ListItem,
-	Paper,
+    Box,
+    List,
+    ListItem,
+    Paper,
 } from "@mui/material";
 
 const PopularMenuItems = () => {
@@ -29,10 +29,10 @@ const PopularMenuItems = () => {
                 const courtsItems = response.data;
                 loading.current = false; /* done loading */
                 setpopularItems(courtsItems);
-            } catch (error) { 
+            } catch (error) {
                 loading.current = false; /* done loading */
                 setpopularItems([]);
-                console.log(error) 
+                console.log(error)
             };
         };
 
@@ -54,22 +54,31 @@ const PopularMenuItems = () => {
         const rating = item.avgRating > 0 ? item.avgRating : "-";
 
         return (
-            <Link to={`/foodInfo/${id}`} className="link">
-                <ListItem component="div" disablePadding button={true}
-                    sx={{
-                        paddingLeft: '16px', // Add left padding
-                        paddingRight: '16px', // Add right padding for symmetry
-                        borderBottom: '1px solid #e0e0e0', // Line between items
-                        marginBottom: '8px', // Spacing between items
-                        paddingBottom: '8px', // Padding at the bottom of the item
-                        display: 'flex', // Make this a flex container
-                        justifyContent: 'space-between', // Space between items
-                        alignItems: 'center', // Align items vertically in the center
-                    }}>
-                    <span className="listItem">{name}</span>
-                    <span className="listRating">{rating}</span> {/* Added marginRight */}
-                </ListItem>
-            </Link>
+            <motion.div
+                key={id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.2 }}
+                layout
+            >
+                <Link to={`/foodInfo/${id}`} className="link">
+                    <ListItem component="div" disablePadding button={true}
+                        sx={{
+                            paddingLeft: '16px', // Add left padding
+                            paddingRight: '16px', // Add right padding for symmetry
+                            borderBottom: '1px solid #e0e0e0', // Line between items
+                            marginBottom: '8px', // Spacing between items
+                            paddingBottom: '8px', // Padding at the bottom of the item
+                            display: 'flex', // Make this a flex container
+                            justifyContent: 'space-between', // Space between items
+                            alignItems: 'center', // Align items vertically in the center
+                        }}>
+                        <span className="listItem">{name}</span>
+                        <span className="listRating">{rating}</span> {/* Added marginRight */}
+                    </ListItem>
+                </Link>
+            </motion.div>
         );
     }
 
@@ -87,24 +96,26 @@ const PopularMenuItems = () => {
                 {/* <h6>(click to view info)</h6> */}
                 <Box sx={{ width: 380, height: 400, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
                     <Paper style={{ height: 400, overflow: 'auto' }}>
-                        <List>
-                            {
-                                loading.current ? (
-                                    <List>
-                                        <ListItem component="div" disablePadding button={true}>
-                                            <span className="header">{"Loading..."}</span>
-                                        </ListItem>
-                                    </List>
-                                ) : (
-                                    existsPopularItems ? (
-                                        popularItems.map((item) => listItem(item))
+                        <List component={motion.ul} layout>
+                            <AnimatePresence initial={false}>
+                                {
+                                    loading.current ? (
+                                        <List>
+                                            <ListItem component="div" disablePadding button={true}>
+                                                <span className="header">{"Loading..."}</span>
+                                            </ListItem>
+                                        </List>
                                     ) : (
-                                        <ListItem component="div" button={true}>
-                                            <span>No popular items today</span>
-                                        </ListItem>
+                                        existsPopularItems ? (
+                                            popularItems.map((item) => listItem(item))
+                                        ) : (
+                                            <ListItem component="div" button={true}>
+                                                <span>No popular items today</span>
+                                            </ListItem>
+                                        )
                                     )
-                                )
-                            }
+                                }
+                            </AnimatePresence>
                         </List>
                     </Paper>
                 </Box>

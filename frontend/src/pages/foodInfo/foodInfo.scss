@@ -1,207 +1,186 @@
-// Styling for page displaying info related to a menu item
+/* Modern Food Info Page Styles */
 .foodInfo {
+    min-height: 100vh;
     width: 100vw;
-    height: 100vh;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0,) 0%, 
-        rgba(0, 0, 0, 1) 100%
-        ), 
-        url("../../components/titan_background.jpeg");
-    background-size: cover;
-    position: relative;
-    color: white; 
-    overflow: auto;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 40%),
+        var(--bg-primary);
+    padding-top: 90px;
+    padding-bottom: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xl);
+    overflow-x: hidden;
 
-    .nutrition {
-        margin: 0px 40px;
-
-        .nutritionFacts {
-            color: white;
-            transform: translate(0px, 100px);
-            .header {
-                font-weight: bold;
-                background-color: none;
-                border: solid goldenrod;
-                width:fit-content;
-            }
-            .nutritionItems {
-                background-color: var(--main-color);
-                border-radius: 5px;
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                width: 400px;
-            }
-    
-            .link {
-                padding: 10px 0px;
-                margin-right: 0px;
-                cursor: pointer;
-            }
-            
-            span {
-                padding: 10px;
-                cursor: pointer;
-            }
-    
-            .link {
-                &:hover {
-                    background-color: goldenrod;
-                    border-radius: 5px;
-                }
-            }
-        }
-        .percent {
-            transform: translate(0px, 300px);
-            font-size: small;
-            font-weight: bold;
-        
-        }
+    /* Grid Layout for Top Section */
+    .infoGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: var(--space-lg);
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 var(--space-lg);
     }
-    .dietaryTags {
-        .tags {
-            color: white;
-            transform: translate(500px, 60px);
-            .header {
-                font-weight: bold;
-                background-color: none;
-                border: solid goldenrod;
-                width:fit-content;
-            }
-            .tagNames {
-                background-color: var(--main-color);
-                border-radius: 5px;
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                width: 400px;
-            }
-    
-            .link {
-                padding: 10px 0px;
-                margin-right: 0px;
-                cursor: pointer;
-            }
-            
-            span {
-                padding: 10px;
-                cursor: pointer;
-            }
-    
-            .link {
-                &:hover {
-                    background-color: goldenrod;
-                    border-radius: 5px;
+
+    /* Info Cards (Nutrition, Tags, Locations) */
+    .infoCard {
+        background: var(--bg-glass) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl) !important;
+        height: 400px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        /* Header */
+        .cardHeader {
+            background: var(--bg-secondary) !important;
+            border-bottom: 1px solid var(--border-color);
+            padding: var(--space-md);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* List Content */
+        .MuiList-root {
+            padding: var(--space-md) !important;
+            overflow-y: auto;
+
+            .MuiListItem-root {
+                border-bottom: 1px solid var(--border-color);
+                padding: var(--space-sm) 0;
+
+                &:last-child {
+                    border-bottom: none;
                 }
             }
         }
     }
-    .ratings {
-        .tags {
-            color: white;
-            transform: translate(500px, 200px);
-            .header {
-                font-weight: bold;
-                background-color: none;
-                border: solid goldenrod;
-                width:fit-content;
+
+    /* Interaction Section (Ratings & Add to Tracker) */
+    .interactionSection {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-lg);
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 var(--space-lg);
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    /* Ratings Box */
+    .ratingsBox {
+        background: var(--bg-glass);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: var(--space-md);
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        flex: 1;
+        min-width: 300px;
+
+        .MuiIconButton-root {
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+
+            &:hover {
+                color: #FFD700;
             }
-            .tagNames {
-                background-color: var(--main-color);
-                border-radius: 5px;
-                display: flex;
-                position: absolute;
-                width: 470px;
+
+            svg {
+                font-size: 28px;
             }
-    
-            .link {
-                padding: 10px 0px;
-                margin-right: 0px;
-                cursor: pointer;
+        }
+    }
+
+    /* Tracker Form */
+    .trackerBox {
+        background: var(--bg-glass);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: var(--space-md);
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        flex: 1;
+        min-width: 300px;
+        flex-wrap: wrap;
+
+        input {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: var(--space-sm);
+            border-radius: var(--radius-md);
+            outline: none;
+            height: 56px;
+
+            &:focus {
+                border-color: var(--accent-primary);
             }
-            
-            span {
-                padding: 10px;
-                cursor: pointer;
-            }
-    
-            .link {
-                &:hover {
-                    background-color: goldenrod;
-                    border-radius: 5px;
+        }
+
+        .MuiFormControl-root {
+            min-width: 150px;
+
+            .MuiOutlinedInput-root {
+                color: var(--text-primary);
+
+                fieldset {
+                    border-color: var(--border-color);
+                }
+
+                &:hover fieldset {
+                    border-color: var(--accent-primary);
+                }
+
+                &.Mui-focused fieldset {
+                    border-color: var(--accent-primary);
                 }
             }
-        }
-    }
-    .upcomingMeals {
-        .meals {
-            color: white;
-            transform: translate(1000px, 35px);
-            .header {
-                font-weight: bold;
-                background-color: none;
-                border: solid goldenrod;
-                width:fit-content;
+
+            .MuiInputLabel-root {
+                color: var(--text-secondary);
             }
-            .mealLocation {
-                background-color: var(--main-color);
-                border-radius: 5px;
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                width: 400px;
-            }
-    
-            .link {
-                padding: 10px 0px;
-                margin-right: 0px;
-                cursor: pointer;
-            }
-            
-            span {
-                padding: 10px;
-                cursor: pointer;
-            }
-    
-            .link {
-                &:hover {
-                    background-color: goldenrod;
-                    border-radius: 5px;
-                }
+
+            .MuiSelect-icon {
+                color: var(--text-secondary);
             }
         }
-    }
-    .ingredients {
-        transform: translate(0px, 450px);
-        margin: 0px 40px;
-        .ingredientHeader{
-            font-weight: bold;
-            background-color: none;
-            border: solid goldenrod;
-            width:fit-content;
-            transform: translateX(650px);
 
+        .MuiButton-root {
+            background: var(--accent-gradient) !important;
+            height: 56px;
+            font-weight: 600;
         }
-
     }
-    .disclaimer {
-        transform: translate(0px, 600px);
-        font-weight: lighter;
-        .disclaimerHeader{
-            font-weight: bold;
-            background-color: none;
-            border: solid red;
-            width:fit-content;
-            transform: translateX(650px);
 
+    /* Ingredients & Disclaimer */
+    .detailsSection {
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 var(--space-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+
+        .detailsBox {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+
+            &.disclaimer {
+                border-color: rgba(248, 113, 113, 0.3);
+                background: rgba(248, 113, 113, 0.05);
+            }
         }
-
     }
-
-    // make drop down for meal type's text white
-    .MuiSelect-select {
-        color: white;
-    }
-    
 }

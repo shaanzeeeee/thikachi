@@ -1,86 +1,87 @@
-// styling for settings page
+/* Modern Settings Page Styles */
 .settings {
+    min-height: 100vh;
     width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0, ) 0%,
-            rgba(0, 0, 0, 1) 100%),
-            url("../../components/titan_background.jpeg");
-    background-size: cover;
-    position: relative;
-    overflow: auto;
+    background:
+        radial-gradient(ellipse at 20% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 20%, rgba(0, 212, 170, 0.15) 0%, transparent 40%),
+        var(--bg-primary);
+    padding-top: 90px;
+    padding-bottom: var(--space-3xl);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .centered {
-        // height: 100vh;
-        
-        // display: flex;
-        // justify-content: center;
-        // align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        padding: var(--space-xl);
 
-        .box {
-            margin: 10px;
-            width: auto;
-    
-            .pageTitle {
-                display: flex;
-                padding: 8px;
-                font-size: 32px;
-                background-color: black;
-                border-radius: 5px;
-                color: white;
-                border: none;
-            }
-     
-            .buttonText {
-                display: block;
-                padding: 12px;
-                font-size: 18px;
-                background-color: rgba(220, 160, 30, .5);;
-                border-radius: 5px;
-                color: white;
-                border: none;
-                text-align: center;
-    
-                &:hover {
-                    cursor: pointer;
-                    background-color: goldenrod;
-                }
-               
-                width: 170px;
-            }
+        .MuiGrid-container {
+            align-items: center;
+            justify-content: center;
         }
 
         .about {
-            width: 50%;
-            height: 60%;
-            position: relative;
-            top: 45vh;
-            left: 10vw;
-            color: white;
-            display: inline-flex;
-            flex-direction: column;
-        }
-    
-        .column1 {
-            width: 25%;
-            height: 60%;
-            position: relative;
-            top: 40vh;
-            left: -15vw;
-            color: white;
             display: flex;
             flex-direction: column;
+            gap: var(--space-md);
+
+            .pageTitle {
+                font-size: var(--font-size-4xl);
+                font-weight: 700;
+                color: var(--text-primary);
+                background: var(--accent-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
-    
-        .column2 {
-            width: 25%;
-            height: 60%;
-            position: relative;
-            top: 40vh;
-            left: -20vw;
-            color: white;
-            display: flex;
-            flex-direction: column;
+
+        /* Action Buttons */
+        .box {
+            margin-bottom: var(--space-md);
+            width: 100%;
+
+            .link {
+                text-decoration: none;
+                width: 100%;
+                display: block;
+            }
+
+            .buttonText {
+                display: block;
+                padding: var(--space-md) var(--space-lg);
+                font-size: var(--font-size-lg);
+                background: var(--bg-glass);
+                backdrop-filter: blur(10px);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-lg);
+                color: var(--text-primary);
+                text-align: center;
+                transition: all var(--transition-normal);
+                font-weight: 500;
+                width: 100%;
+
+                &:hover {
+                    cursor: pointer;
+                    background: var(--bg-glass-hover);
+                    border-color: var(--accent-primary);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                }
+            }
+
+            /* Logout Button Specifics */
+            a[href="/login"] .buttonText {
+                border-color: rgba(248, 113, 113, 0.3);
+                color: #F87171;
+
+                &:hover {
+                    background: rgba(248, 113, 113, 0.1);
+                    border-color: #F87171;
+                }
+            }
         }
     }
 }

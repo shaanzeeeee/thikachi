@@ -73,7 +73,7 @@ const NutrtionGoals = () => {
             });
 
         } catch (err) {
-        
+
             console.log(err);
         }
 
@@ -82,7 +82,7 @@ const NutrtionGoals = () => {
     };
 
     /* Updates email when user initiates through the UI */
-    const updateCarbohydrates= async (e) => {
+    const updateCarbohydrates = async (e) => {
         /* Prevent default event behavior */
         e.preventDefault();
 
@@ -99,7 +99,7 @@ const NutrtionGoals = () => {
             });
 
         } catch (err) {
-        
+
             console.log(err);
         }
         /* Load and display new user information */
@@ -124,7 +124,7 @@ const NutrtionGoals = () => {
             });
 
         } catch (err) {
-        
+
             console.log(err);
         }
 
@@ -150,7 +150,7 @@ const NutrtionGoals = () => {
             });
 
         } catch (err) {
-        
+
             console.log(err);
         }
 
@@ -159,64 +159,63 @@ const NutrtionGoals = () => {
     };
 
     return (
-        <div className="personalInfo">
+        <div className="nutritionGoals">
             <Navbar />
 
-            <div className="personalInfoForm">
+            <div className="nutritionGoalsForm">
                 <div className="container">
                     <form>
                         <h1>Nutrition Goals</h1>
-                        <button type='button' className="infoButton">Calories: <span>{calories}</span> </button>
-                        <button type='button' className="infoButton">Protein: <span>{protein}</span></button>
-                        <button type='button' className="infoButton">Carbohydrates: <span>{carbohydrates}</span></button>
-                        <button type='button' className="infoButton">Fat: <span>{fat}</span></button>
 
+                        {/* Display Current Info */}
+                        <div className="infoButton">Calories: <span>{calories}</span> </div>
+                        <div className="infoButton">Protein: <span>{protein}</span></div>
+                        <div className="infoButton">Carbohydrates: <span>{carbohydrates}</span></div>
+                        <div className="infoButton">Fat: <span>{fat}</span></div>
+
+                        {/* Input Fields */}
                         <label>
-                            <div className="infoType"> {"Change calories: "}</div>
+                            <div className="infoType">Change calories:</div>
                             <input
-                                type="calories"
+                                type="number"
                                 value={newCalories}
                                 onChange={(e) => setNewCalories(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && updateCalories(e)}
                             />
-                            <button onClick={updateCalories} className="formButton">Submit</button>
-
+                            <button onClick={updateCalories} className="formButton" type="button">Submit</button>
                         </label>
 
                         <label>
-                            <div className="infoType"> {"Change protein: "}</div>
+                            <div className="infoType">Change protein:</div>
                             <input
-                                type="protein"
+                                type="number"
                                 value={newProtein}
                                 onChange={(e) => setNewProtein(e.target.value)}
-                                className="input"
                                 onKeyDown={(e) => e.key === 'Enter' && updateProtein(e)}
                             />
-                            <button onClick={updateProtein} className="formButton">Submit</button>
+                            <button onClick={updateProtein} className="formButton" type="button">Submit</button>
                         </label>
 
                         <label>
-                            <div className="infoType"> {"Change carbohydrates: "}</div>
+                            <div className="infoType">Change carbs:</div>
                             <input
-                                type="carbohydrates"
+                                type="number"
                                 value={newCarbohydrates}
                                 onChange={(e) => setNewCarbohydrates(e.target.value)}
-                                className="input"
                                 onKeyDown={(e) => e.key === 'Enter' && updateCarbohydrates(e)}
                             />
-                            <button onClick={updateCarbohydrates} className="formButton">Submit</button>
+                            <button onClick={updateCarbohydrates} className="formButton" type="button">Submit</button>
                         </label>
 
                         <label>
-                            <div className="infoType"> {"Change Fat: "}</div>
+                            <div className="infoType">Change fat:</div>
                             <input
-                                type="fat"
+                                type="number"
                                 value={newFat}
                                 onChange={(e) => setNewFat(e.target.value)}
-                                className="input"
                                 onKeyDown={(e) => e.key === 'Enter' && updateFat(e)}
                             />
-                            <button onClick={updateFat} className="formButton">Submit</button>
+                            <button onClick={updateFat} className="formButton" type="button">Submit</button>
                         </label>
                     </form>
                 </div>

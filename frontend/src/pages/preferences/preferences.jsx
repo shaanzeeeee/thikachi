@@ -31,11 +31,11 @@ const PEANUTS = "Peanuts";
  */
 const Preferences = () => {
     /* get user from auth context, can directly index into its fields */
-    const { user } = useContext(AuthContext); 
+    const { user } = useContext(AuthContext);
     const userId = user._id;
 
     /* Preference flags */
-    const [vegetarian, setVegetarian] = useState(false); 
+    const [vegetarian, setVegetarian] = useState(false);
     const [vegan, setVegan] = useState(false);
 
     /* Restriction flags */
@@ -75,14 +75,14 @@ const Preferences = () => {
     const [shouldUpdateRests, setShouldUpdateRests] = useState(false);
 
     /* Load initial preferences and restrictions on page render */
-    const isFirstRender = useRef(true); 
+    const isFirstRender = useRef(true);
     useEffect(() => {
         // Get initial preferences then set local variables to those.
         const setInitialPreferences = async () => {
             try {
                 const response = await axios.get('users/preferences/' + userId, {
                     headers: {
-                        token: "Bearer " + user.accessToken 
+                        token: "Bearer " + user.accessToken
                     }
                 });
                 const initialPreferences = response.data;
@@ -109,7 +109,7 @@ const Preferences = () => {
             try {
                 const response = await axios.get('users/restrictions/' + userId, {
                     headers: {
-                        token: "Bearer " + user.accessToken 
+                        token: "Bearer " + user.accessToken
                     }
                 });
                 const initialRestrictions = response.data;
@@ -159,7 +159,7 @@ const Preferences = () => {
                     restrictions.push(PEANUTS);
                 }
 
-                setRests(restrictions); 
+                setRests(restrictions);
                 setShouldUpdateRests(true);
                 console.log("finished setting initial rests")
             } catch (error) {
@@ -187,7 +187,7 @@ const Preferences = () => {
         if (vegan) preferences.push(VEGAN);
 
         setPrefs(preferences); // triggers useEffect below
-    // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [vegan, vegetarian]);
 
     /* Update the preferences in the database when prefs changes, not on first render though. Triggered by useEffect above */
@@ -204,7 +204,7 @@ const Preferences = () => {
                     preferences: prefs
                 }, {
                     headers: {
-                        token: "Bearer " + user.accessToken 
+                        token: "Bearer " + user.accessToken
                     }
                 });
                 console.log("Successfully updated preferences: " + prefs);
@@ -212,7 +212,7 @@ const Preferences = () => {
                 console.log("Failed to update preferences: " + error);
             }
         }
-        updatePreferencesInDB(); 
+        updatePreferencesInDB();
         // eslint-disable-next-line
     }, [prefs]);
 
@@ -236,8 +236,8 @@ const Preferences = () => {
         if (milk) restrictions.push(MILK);
         if (peanuts) restrictions.push(PEANUTS);
 
-        setRests(restrictions); 
-    // eslint-disable-next-line
+        setRests(restrictions);
+        // eslint-disable-next-line
     }, [coconut, eggs, fish, gluten, sesame, shellfish, soy, treeNuts, wheat, milk, peanuts]);
 
     /* Update the restrictions in the database when restrictions changes, not on first render though. Triggered by useEffect above. */
@@ -254,7 +254,7 @@ const Preferences = () => {
                     restrictions: rests
                 }, {
                     headers: {
-                        token: "Bearer " + user.accessToken 
+                        token: "Bearer " + user.accessToken
                     }
                 });
                 console.log("Successfully updated restrictions: " + rests);
@@ -271,85 +271,120 @@ const Preferences = () => {
     return (
         <div className="preferences">
             <Navbar />
-            <Grid container alignItems={"flex-start"} rowSpacing={10} columnSpacing={{ xs: 10, sm: 2, md: 3 }}>
-                <Grid item xs={2}>
-                    <div className="about">
-                        <Box className="box"><span className="pageTitle">Dietary Preferences</span></Box>
-                        <Box className="box"><span className="pageDesc">Select Your Dietary Preferences & Restrictions</span></Box>
-                    </div>
-                </Grid>
-                <Grid item xs={3}>
-                    <div className="column1">
-                        <Box className="box"><span className="header">Preferences</span></Box>
+            <div className="preferencesContainer">
+                <div className="pageHeader">
+                    <span className="pageTitle">Dietary Preferences</span>
+                    <span className="pageDesc">Select Your Dietary Preferences & Restrictions</span>
+                </div>
+
+                <div className="contentGrid">
+                    {/* Preferences Column */}
+                    <div className="column">
+                        <div className="columnHeader">Preferences</div>
                         <FormGroup>
-
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={VEGETARIAN} checked={vegetarian} onChange={handleVegetarian} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={VEGAN} checked={vegan} onChange={handleVegan} />
-                            </span></Box>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={vegetarian} onChange={handleVegetarian} />}
+                                    label={VEGETARIAN}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={vegan} onChange={handleVegan} />}
+                                    label={VEGAN}
+                                />
+                            </div>
                         </FormGroup>
                     </div>
-                </Grid>
 
-                <Grid item xs={1}>
-                    <div className="column2">
-                        <Box className="box"><span className="header">Restrictions</span></Box>
-                        <FormGroup  >
-
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={COCONUT + " free"} checked={coconut} onChange={handleCoconut} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={EGGS + " free"} checked={eggs} onChange={handleEggs} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={FISH + " free"} checked={fish} onChange={handleFish} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={GLUTEN + " free"} checked={gluten} onChange={handleGluten} />
-                            </span></Box>
+                    {/* Restrictions Column 1 */}
+                    <div className="column">
+                        <div className="columnHeader">Restrictions</div>
+                        <FormGroup>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={coconut} onChange={handleCoconut} />}
+                                    label={`${COCONUT} free`}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={eggs} onChange={handleEggs} />}
+                                    label={`${EGGS} free`}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={fish} onChange={handleFish} />}
+                                    label={`${FISH} free`}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={gluten} onChange={handleGluten} />}
+                                    label={`${GLUTEN} free`}
+                                />
+                            </div>
                         </FormGroup>
                     </div>
-                </Grid>
 
-                <Grid item xs={1}>
-                    <div className="column3">
-                        <FormGroup  >
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={SESAME + " free"} checked={sesame} onChange={handleSesame} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={SHELLFISH + " free"} checked={shellfish} onChange={handleShellfish} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={SOY + " free"} checked={soy} onChange={handleSoy} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={TREE_NUTS + " free"} checked={treeNuts} onChange={handleTreeNuts} />
-                            </span></Box>
+                    {/* Restrictions Column 2 */}
+                    <div className="column">
+                        <div className="columnHeader">More Restrictions</div>
+                        <FormGroup>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={sesame} onChange={handleSesame} />}
+                                    label={`${SESAME} free`}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={shellfish} onChange={handleShellfish} />}
+                                    label={`${SHELLFISH} free`}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={soy} onChange={handleSoy} />}
+                                    label={`${SOY} free`}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={treeNuts} onChange={handleTreeNuts} />}
+                                    label={`${TREE_NUTS} free`}
+                                />
+                            </div>
                         </FormGroup>
                     </div>
-                </Grid>
 
-                <Grid item xs={1} className="column4">
-                    <div className="pr-5">
-                        <FormGroup  >
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={WHEAT + " free"} checked={wheat} onChange={handleWheat} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={MILK + " free"} checked={milk} onChange={handleMilk} />
-                            </span></Box>
-                            <Box className="box"><span className="spanAroundCheckBox">
-                                <FormControlLabel className="checkbox" control={<Checkbox />} label={PEANUTS + " free"} checked={peanuts} onChange={handlePeanuts} />
-                            </span></Box>
+                    {/* Restrictions Column 3 */}
+                    <div className="column">
+                        <div className="columnHeader">Other</div>
+                        <FormGroup>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={wheat} onChange={handleWheat} />}
+                                    label={`${WHEAT} free`}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={milk} onChange={handleMilk} />}
+                                    label={`${MILK} free`}
+                                />
+                            </div>
+                            <div className="checkboxWrapper">
+                                <FormControlLabel
+                                    control={<Checkbox checked={peanuts} onChange={handlePeanuts} />}
+                                    label={`${PEANUTS} free`}
+                                />
+                            </div>
                         </FormGroup>
                     </div>
-                </Grid>
-
-            </Grid>
+                </div>
+            </div>
             {/* <Footer /> */}
         </div>
     );

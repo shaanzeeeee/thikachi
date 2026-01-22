@@ -1,115 +1,133 @@
-// Styling for page to report a problem
+/* Modern Report Problem Page Styles */
 .reportProblem {
+    min-height: 100vh;
     width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0, ) 0%,
-            rgba(0, 0, 0, 1) 100%),
-            url("../../components/titan_background.jpeg");
-    background-size: cover;
+    background:
+        radial-gradient(ellipse at 20% 80%, rgba(248, 113, 113, 0.15) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+        var(--bg-primary);
+    padding-top: 90px;
+    padding-bottom: var(--space-3xl);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .reportProblemForm {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: var(--space-lg);
 
         .container {
             width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
+            max-width: 500px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            color: white;
+            gap: var(--space-md);
+
+            .recentlyRegisteredMessage {
+                min-height: 24px;
+                color: var(--accent-success);
+                font-weight: 500;
+                text-align: center;
+            }
 
             form {
-                width: 300px;
-                height: 300px;
-                padding: 30px;
-                border-radius: 5px;
-                background-color: var(--main-color);
+                width: 100%;
+                background: var(--bg-glass);
+                backdrop-filter: blur(20px);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-xl);
+                padding: var(--space-2xl);
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
-
-                .message {
-                    margin-bottom: 5px;
-                    align-items: center;
-                }
-
-                textarea {
-                    height: 40px;
-                    border-radius: 5px;
-                    background-color: gray;
-                    color: white;
-                    padding-left: 10px;
-                    border: none;
-                    resize: none;
-                    height: 120px;
-                    margin-top: 10px;
-
-                    &::placeholder {
-                        color: lightgray;
-                    }
-                }
-
-                button {
-                    height: 40px;
-                    border-radius: 5px;
-                    background-color: goldenrod;
-                    color: white;
-                    font-size: 18px;
-                    font-weight: 500;
-                    cursor: pointer;
-                    border: none;
-                }
-
-                .link {
-                    margin-top: 10px;
-
-                    button {
-                        width: 300px;
-                        color: black;
-                        background-color: white;
-                    }
-                }
-
-                span {
-                    color: lightgray;
-                    text-align: center;
-                }
-
-                small {
-                    text-align: center;
-                }
-
-                b {
-                    color: white;
-                    cursor: pointer;
-                }
+                gap: var(--space-lg);
 
                 h1 {
                     text-align: center;
+                    font-size: var(--font-size-2xl);
+                    color: var(--text-primary);
+                    margin: 0;
                 }
-            }
 
-            .errorMessage {
-                margin-top: 5px;
-                margin-bottom: 5px;
+                textarea {
+                    width: 100%;
+                    height: 150px;
+                    background: var(--bg-primary);
+                    border: 1px solid var(--border-color);
+                    border-radius: var(--radius-md);
+                    padding: var(--space-md);
+                    color: var(--text-primary);
+                    font-family: var(--font-family);
+                    font-size: var(--font-size-base);
+                    resize: none;
+                    outline: none;
+                    transition: border-color var(--transition-fast);
 
-                p {
-                    text-align: center;
-                    font-size: 14px;
-                    color: red;
+                    &:focus {
+                        border-color: var(--accent-primary);
+                        box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+                    }
+
+                    &::placeholder {
+                        color: var(--text-secondary);
+                    }
                 }
-            }
 
-            .recentlyRegisteredMessage {
-                margin-top: -20px; // to center the sign in box
-                margin-bottom: 20px;
+                .errorMessage {
+                    min-height: 20px;
+
+                    p {
+                        color: #F87171;
+                        font-size: var(--font-size-sm);
+                        text-align: center;
+                        margin: 0;
+                    }
+                }
+
+                /* Buttons */
+                .loginButton {
+                    width: 100%;
+                    height: 48px;
+                    background: var(--accent-gradient);
+                    border: none;
+                    border-radius: var(--radius-md);
+                    color: white;
+                    font-weight: 600;
+                    font-size: var(--font-size-lg);
+                    cursor: pointer;
+                    transition: all var(--transition-fast);
+                    box-shadow: var(--shadow-glow);
+
+                    &:hover {
+                        transform: translateY(-2px);
+                        opacity: 0.9;
+                    }
+                }
+
+                .link {
+                    width: 100%;
+                    text-decoration: none;
+
+                    .backButton {
+                        width: 100%;
+                        height: 40px;
+                        background: transparent;
+                        border: 1px solid var(--border-color);
+                        border-radius: var(--radius-md);
+                        color: var(--text-secondary);
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all var(--transition-fast);
+
+                        &:hover {
+                            background: var(--bg-secondary);
+                            color: var(--text-primary);
+                            border-color: var(--text-primary);
+                        }
+                    }
+                }
             }
         }
     }

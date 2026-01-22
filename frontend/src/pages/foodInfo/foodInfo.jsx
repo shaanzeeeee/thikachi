@@ -494,134 +494,51 @@ const FoodInfo = () => {
     return (
         <div className="foodInfo">
             <Navbar />
-            <Paper sx={{ // info for nutrition facts (sx provides inline style information for this component)
-                background: '#0b0b0b',
-                width: .4,
-                maxHeight: 400,
-                position: 'relative',
-                float: 'left',
-                display: 'inline',
-                ml: 6,
-                top: 85,
-                borderRadius: 2.5,
-                overflow: 'auto',
-            }}>
 
-                <div style={{ position: 'relative' }}>
-                    {/* Fixed Header */}
-                    <div style={{ position: 'sticky', top: 0, zIndex: 100 }}>
-                        <ListItem sx={{
-                            background: '#242424',
-                            width: .98,
-                            mx: 'auto',
-                            borderRadius: 2.5,
-                        }}>
-                            <Typography style={{ color: "white" }} fontWeight="bold">
-                                Nutrition Facts for: &nbsp; <span style={{ color: "#ebc034" }}>{menuItem.name}</span>
-                            </Typography>
-                        </ListItem>
+            {/* Top Grid: Nutrition, Tags, Locations */}
+            <div className="infoGrid">
+                {/* Nutrition Facts */}
+                <Paper className="infoCard">
+                    <div className="cardHeader">
+                        <Typography style={{ color: "white" }} fontWeight="bold">
+                            Nutrition Facts for: &nbsp; <span style={{ color: "#ebc034" }}>{menuItem.name}</span>
+                        </Typography>
                     </div>
-
-                    {/* Scrollable Content */}
-                    <List style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                    <List>
                         {nutrition}
                     </List>
-                </div>
-            </Paper>
+                </Paper>
 
-            <Paper sx={{ // info for tags
-                background: '#0b0b0b',
-                width: .2,
-                maxHeight: 400,
-                position: 'relative',
-                float: 'left',
-                display: 'inline',
-                ml: 6,
-                top: 85,
-                borderRadius: 2.5,
-                overflow: 'auto',
-            }}>
-                {/* Dietary Tags List */}
-                <div style={{ position: 'relative' }}>
-                    {/* Fixed Header */}
-                    <div style={{ position: 'sticky', top: 0, zIndex: 100 }}>
-                        <ListItem sx={{
-                            background: '#242424',
-                            width: .98,
-                            mx: 'auto',
-                            borderRadius: 2.5,
-                        }}>
-                            <Typography fontWeight="bold" color={"white"}>
-                                Dietary Tags:
-                            </Typography>
-                        </ListItem>
+                {/* Dietary Tags */}
+                <Paper className="infoCard">
+                    <div className="cardHeader">
+                        <Typography fontWeight="bold" color={"white"}>
+                            Dietary Tags:
+                        </Typography>
                     </div>
-
-                    {/* Scrollable Content */}
-                    <List style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                    <List>
                         {tags1}
                         {tags2}
                     </List>
-                </div>
-            </Paper>
+                </Paper>
 
-            <Paper sx={{ // info for locations served at today
-                background: '#0b0b0b',
-                width: .2,
-                maxHeight: 400,
-                position: 'relative',
-                float: 'left',
-                display: 'inline',
-                ml: 6,
-                top: 85,
-                borderRadius: 2.5,
-                overflow: 'auto',
-            }}>
-                {/* Locations Served At Today List */}
-                <div style={{ position: 'relative' }}>
-                    {/* Fixed Header */}
-                    <div style={{ position: 'sticky', top: 0, zIndex: 100 }}>
-                        <ListItem sx={{
-                            background: '#242424',
-                            width: .98,
-                            mx: 'auto',
-                            borderRadius: 2.5,
-                        }}>
-                            <Typography fontWeight="bold" color={"white"}>
-                                Locations Served At Today:
-                            </Typography>
-                        </ListItem>
+                {/* Locations */}
+                <Paper className="infoCard">
+                    <div className="cardHeader">
+                        <Typography fontWeight="bold" color={"white"}>
+                            Locations Served At Today:
+                        </Typography>
                     </div>
-
-                    {/* Scrollable Content */}
-                    <List style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                    <List>
                         {locations}
                     </List>
-                </div>
-            </Paper>
+                </Paper>
+            </div>
 
-            {/* <Box sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-            }}> */}
-
-            <Box sx={{
-                background: '#0b0b0b',
-                width: .35,
-                height: 'auto',
-                overflow: 'hidden', //do not remove, will break the ratings appearance and idk why
-                position: 'absolute',
-                ml: 6, //left margin (percent of screen)
-                mt: 63, //top margin (percent of screen)
-                borderRadius: 2.5,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0 10px' // Add some padding to ensure elements aren't touching the edges
-            }}>
-
-                <div style={{ display: 'flex', marginRight: 5 }}>
+            {/* Interaction Section: Ratings & Tracker */}
+            <div className="interactionSection">
+                {/* Ratings */}
+                <Box className="ratingsBox">
                     <Tooltip title={"Click the stars to rate the menu item. Click the bookmark icon to save (favorite) the item."} placement="bottom">
                         <IconButton color="inherit">
                             <InfoIcon />
@@ -645,135 +562,80 @@ const FoodInfo = () => {
                     <IconButton color="inherit" onClick={handleSavedClick}>
                         {savedClick ? <BookmarkIcon /> : <BookmarkBorderIcon />}
                     </IconButton>
-                </div>
 
-                {/* avg rating info */}
-                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-                    <span style={{ fontSize: 16, marginLeft: 20 }}>
-                        {`Average Rating: ${avg}`}
-                    </span>
-                </div>
-            </Box>
+                    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                        <span style={{ fontSize: 16 }}>
+                            {`Average Rating: ${avg}`}
+                        </span>
+                    </div>
+                </Box>
 
-            {/* Box for form field and button */}
-            <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginLeft: '10px',
-                position: "absolute",
-                ml: 80, //left margin (percent of screen)
-                mt: 60, //top margin (percent of screen),
-                background: '#0b0b0b',
-                padding: 1,
-                borderRadius: 2.5
-            }}>
-                <span style={{ marginRight: 5 }}>
+                {/* Tracker Form */}
+                <Box className="trackerBox">
                     <input
                         type="number"
                         placeholder="Servings"
                         value={servings}
                         onChange={(e) => setServings(e.target.value)}
                         min={0}
-                        style={{
-                            padding: '5px',
-                            border: 'none',
-                            borderRadius: '4px',
-                            height: '40px', // Adjust height to align with button
-                            // marginTop: '0px',
-                            marginRight: '-5px',
-                            width: '100px'
-                        }}
                     />
-                </span>
-                {/* <input type="cals" value={calories} onChange={(e) => setCalories(e.target.value)} /> */}
 
-                <FormControl error fullWidth sx={{ m: 1, width: 200, height: 50, marginTop: 0, marginBottom: .5 }}>
-                    <InputLabel>Meal type</InputLabel>
-                    <Select
-                        id="demo-simple-select"
-                        value={mealType}
-                        label="Filter"
-                        onChange={handleMeals}
-                        classes={{ root: classes.root, select: classes.selected }}
-                    >
-                        <MenuItem value={SELECT_MEAL}>{SELECT_MEAL}</MenuItem>
-                        <MenuItem value={BREAKFAST}>{BREAKFAST}</MenuItem>
-                        <MenuItem value={LUNCH}>{LUNCH}</MenuItem>
-                        <MenuItem value={DINNER}>{DINNER}</MenuItem>
-                        <MenuItem value={SNACK}>{SNACK}</MenuItem>
-                    </Select>
-                </FormControl>
-                <span>
-                    <Button
-                        variant="contained"
-                        onClick={handleAddToTracker}
-                        style={{
-                            backgroundColor: 'goldenrod',
-                            color: 'white',
-                            height: '50px',
-                            paddingLeft: '10px',
-                            paddingRight: '10px',
-                            zIndex: '999'
-                            // marginTop: '0px'
-                        }}>
+                    <FormControl error fullWidth>
+                        <InputLabel>Meal type</InputLabel>
+                        <Select
+                            id="demo-simple-select"
+                            value={mealType}
+                            label="Filter"
+                            onChange={handleMeals}
+                            classes={{ root: classes.root, select: classes.selected }}
+                        >
+                            <MenuItem value={SELECT_MEAL}>{SELECT_MEAL}</MenuItem>
+                            <MenuItem value={BREAKFAST}>{BREAKFAST}</MenuItem>
+                            <MenuItem value={LUNCH}>{LUNCH}</MenuItem>
+                            <MenuItem value={DINNER}>{DINNER}</MenuItem>
+                            <MenuItem value={SNACK}>{SNACK}</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <Button onClick={handleAddToTracker}>
                         Add to Tracker
                     </Button>
-                </span>
-            </Box>
+                </Box>
+            </div>
 
-            {/* sucess and error message*/}
+            {/* Messages */}
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft: '10px',
-                position: "absolute",
-                ml: 125, //left margin (percent of screen)
-                mt: 48, //top margin (percent of screen),
-                // background: '#0b0b0b',
-                padding: 15,
-                borderRadius: 2.5,
-                width: 225,
+                width: '100%',
                 visibility: (allFieldsComplete && !success) && "hidden",
-                color: messageColor
+                color: messageColor,
+                marginTop: '-10px'
             }}>
                 <p> {message} </p>
             </Box>
 
-            {/* ingredients  */}
-            <Box sx={{ ml: 6, mt: 70, width: .9, height: 'auto', position: 'absolute' }}>
-                <Box sx={{
-                    borderColor: '#242424',
-                    p: 1,
-                    m: 1,
-                    borderRadius: 4,
-                    border: '1px solid',
-                    width: 1,
-                    height: 'auto',
-                    display: 'block',
-                }}>
-                    <Typography fontWeight="bold">
-                        Ingredients: &nbsp;
+            {/* Bottom Section: Ingredients & Disclaimer */}
+            <div className="detailsSection">
+                <Box className="detailsBox">
+                    <Typography fontWeight="bold" gutterBottom>
+                        Ingredients:
                     </Typography>
-                    {menuItem.ingredients}
-                </Box>
-                <Box sx={{
-                    borderColor: '#242424',
-                    p: 1,
-                    m: 1,
-                    borderRadius: 4,
-                    border: '1px solid',
-                    height: 'auto',
-                    width: 1,
-                    display: 'block',
-                }}>
-                    <Typography style={{ color: "#f74d40" }} fontWeight="bold" color='red'>
-                        Disclaimer: &nbsp;
+                    <Typography>
+                        {menuItem.ingredients}
                     </Typography>
-                    Menus subject to change. All nutritional information is based on the listed menu items. Any additions to ingredients or condiments will change the nutritional value. All information provided is believed to be accurate and reliable as of the date of posting. Nutritional information may vary by location due to product substitutions or product availability.
                 </Box>
-            </Box>
+
+                <Box className="detailsBox disclaimer">
+                    <Typography style={{ color: "#f74d40" }} fontWeight="bold" gutterBottom>
+                        Disclaimer:
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" style={{ color: '#aaa' }}>
+                        Menus subject to change. All nutritional information is based on the listed menu items. Any additions to ingredients or condiments will change the nutritional value. All information provided is believed to be accurate and reliable as of the date of posting. Nutritional information may vary by location due to product substitutions or product availability.
+                    </Typography>
+                </Box>
+            </div>
         </div>
     );
 };

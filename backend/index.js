@@ -4,9 +4,13 @@ const dotenv = require("dotenv");
 const axios = require("axios");
 const express = require("express");
 const schedule = require("node-schedule");
+const cors = require("cors");
 
 /* Create instance of app */
 const app = express();
+
+/* Enable CORS for frontend */
+app.use(cors());
 
 /* Define REST API endpoint routes */
 const authenticationRoute = require("./routes/auth");
@@ -23,7 +27,7 @@ dotenv.config();
 
 /* Establish connection to MongoDB */
 mongoose
-    .connect( 
+    .connect(
         process.env.MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -38,8 +42,8 @@ app.use(express.json());
 app.use("/api/auth", authenticationRoute);
 app.use("/api/menuInfo", menuInfoRoute);
 app.use("/api/problems", problemsRoute);
-app.use("/api/ratings", ratingsRoute); 
-app.use("/api/recommendations", recommendationsRoute); 
+app.use("/api/ratings", ratingsRoute);
+app.use("/api/recommendations", recommendationsRoute);
 app.use("/api/saved", savedRoute);
 app.use("/api/users", usersRoute);
 
@@ -72,7 +76,7 @@ schedule.scheduleJob('0 0 * * *', async () => {
     } catch (error) {
         console.log("ERROR PARSING DINING DATA AT MIDNIGHT: " + error);
     }
-    
+
     /* Reset user's trackers everyday at 12 am */
     try {
         await axios.delete('http://localhost:8000/api/users/resetTrackers');

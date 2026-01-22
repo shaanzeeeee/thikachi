@@ -11,6 +11,7 @@ import { useRef } from "react";
 import Stack from "@mui/material/Stack";
 import Button from '@mui/material/Button';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { motion, AnimatePresence } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -172,15 +173,24 @@ const ExerciseTracker = () => {
         const id = item.hash;
 
         return (
-            <Link to={`/exerciseInfo/${id}`} className="link">
-                <ListItem component="div" disablePadding button={true}>
-                    {
-                        item.exerciseType === "Weight Lifting" ? <span className="header">{`${name} (${item.sets} sets, ${item.reps} reps)`}</span> :
-                            (<span className="header">{`${name} (${item.time} mins)`}</span>)
-                    }
+            <motion.div
+                key={id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.2 }}
+                layout
+            >
+                <Link to={`/exerciseInfo/${id}`} className="link">
+                    <ListItem component="div" disablePadding button={true}>
+                        {
+                            item.exerciseType === "Weight Lifting" ? <span className="header">{`${name} (${item.sets} sets, ${item.reps} reps)`}</span> :
+                                (<span className="header">{`${name} (${item.time} mins)`}</span>)
+                        }
 
-                </ListItem>
-            </Link>
+                    </ListItem>
+                </Link>
+            </motion.div>
         );
     }
 
@@ -191,13 +201,15 @@ const ExerciseTracker = () => {
                 <h4 className="moreSpace">{"View Your Exercises Today:"}</h4>
                 <Box sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
                     <Paper style={{ maxHeight: 400, overflow: 'auto' }}>
-                        <List>
-                            {
-                                sortType === "all" ? allExercises.map((item) => listItem(item)) :
-                                    (sortType === "cardio" ? cardioExercises.map((item) => listItem(item)) :
-                                        (sortType === "other" ? otherExercises.map((item) => listItem(item)) :
-                                            weightLiftingExercises.map((item) => listItem(item))))
-                            }
+                        <List component={motion.ul} layout>
+                            <AnimatePresence initial={false}>
+                                {
+                                    sortType === "all" ? allExercises.map((item) => listItem(item)) :
+                                        (sortType === "cardio" ? cardioExercises.map((item) => listItem(item)) :
+                                            (sortType === "other" ? otherExercises.map((item) => listItem(item)) :
+                                                weightLiftingExercises.map((item) => listItem(item))))
+                                }
+                            </AnimatePresence>
                         </List>
                     </Paper>
                 </Box>

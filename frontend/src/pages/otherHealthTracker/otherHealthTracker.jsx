@@ -24,6 +24,7 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { LineChart, BarChart, axisClasses } from '@mui/x-charts';
+import { motion, AnimatePresence } from "framer-motion";
 
 // TabPanel setup
 function TabPanel(props) {
@@ -38,11 +39,20 @@ function TabPanel(props) {
       display="flex"
       {...other}
     >
-      {value === index && (
-        <Box component='div' sx={{ p: 1 }}>
-          {children}
-        </Box>
-      )}
+      <AnimatePresence mode="wait">
+        {value === index && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Box component='div' sx={{ p: 1 }}>
+              {children}
+            </Box>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -158,10 +168,10 @@ const OtherHealthTracker = () => {
   useEffect(() => {
     // calculate value
     const updateWaterRec = async () => {
-        let latestWeight;
-        if (weightLog.at(-1)) {
-            latestWeight = parseInt(weightLog.at(-1).weight);
-        }
+      let latestWeight;
+      if (weightLog.at(-1)) {
+        latestWeight = parseInt(weightLog.at(-1).weight);
+      }
       let activityMapping = activityMap.get(activity);
       setRecommendedWater(Math.round(((latestWeight * 0.5 + 12 * activityMapping * 0.25) / 8) / .5) * .5);
     };
@@ -326,7 +336,6 @@ const OtherHealthTracker = () => {
             showMark: ({ index }) => index,
           },
         ]}
-        width={500}
         height={300}
       />;
   } else {
@@ -344,7 +353,6 @@ const OtherHealthTracker = () => {
             showMark: ({ index }) => index,
           },
         ]}
-        width={500}
         height={300}
       />;
   } else {
@@ -362,7 +370,6 @@ const OtherHealthTracker = () => {
             showMark: ({ index }) => index,
           },
         ]}
-        width={500}
         height={300}
       />;
   } else {
@@ -373,158 +380,130 @@ const OtherHealthTracker = () => {
   return (
     <div className="menu">
       <Navbar />
-      <Box
-        sx={{
-          height: 600,
-          width: 1200,
-          borderRadius: 2,
-          border: 1,
-          borderColor: 'white'
-        }}
-      >
+      <Box className="trackerContainer">
         <Tabs
           value={value}
-          textColor="white"
+          textColor="inherit"
           variant="fullWidth"
           onChange={handleChange}
-          aria-label="Vertical tabs example"
-          sx={{ borderRight: 1, borderColor: 'divider' }}
+          aria-label="Health Tracker Tabs"
         >
-          <Tab icon={<ScaleIcon />} iconPosition="start" aria-label="scale" label="Weight" {...a11yProps(0)} />
-          <Tab icon={<BedIcon />} iconPosition="start" aria-label="sleep" label="Sleep" {...a11yProps(1)} />
-          <Tab icon={<LocalDrinkIcon />} iconPosition="start" aria-label="water" label="Water" {...a11yProps(2)} />
-          <Tab icon={<MedicationIcon />} iconPosition="start" aria-label="supps" label="Supplements" {...a11yProps(3)} />
+          <Tab icon={<ScaleIcon />} iconPosition="start" label="Weight" {...a11yProps(0)} />
+          <Tab icon={<BedIcon />} iconPosition="start" label="Sleep" {...a11yProps(1)} />
+          <Tab icon={<LocalDrinkIcon />} iconPosition="start" label="Water" {...a11yProps(2)} />
+          <Tab icon={<MedicationIcon />} iconPosition="start" label="Supplements" {...a11yProps(3)} />
         </Tabs>
+
         {/* Weight content tab */}
         <TabPanel className="contents tab" value={value} index={0} >
-          <Stack className="tab container" spacing={0} direction="row">
-            <Stack className="contents stack" width={"40%"} spacing={0} alignItems={"center"} justifyContent={"center"}>
-              <h4>{"View weights"}</h4>
-              <Box sx={{ width: '100%', height: 370, maxWidth: 360, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
-                <Paper style={{ maxHeight: 400, overflow: 'auto' }}>
+          <div className="tab container">
+            {/* List Column */}
+            <div className="contents stack">
+              <h4>View weights</h4>
+              <div className="list">
+                <Paper>
                   <List>
                     {weightLog?.map((entry) => listWeights(entry))}
                   </List>
                 </Paper>
-              </Box>
-            </Stack>
-            {/* weight bar chart */}
-            <Stack className="contents stack" spacing={0} alignItems={"center"} justifyContent={"center"}>
-              <Box>
-                <h4 className="sectionTitle">{"Weight Progression"}</h4>
-              </Box>
-              <Box>
+              </div>
+            </div>
+
+            {/* Chart Column */}
+            <div className="contents stack">
+              <h4 className="sectionTitle">Weight Progression</h4>
+              <Box sx={{ width: '100%', flexGrow: 1 }}>
                 {weightchart}
               </Box>
-            </Stack>
-            <Box className="entry" sx={{ width: '40%' }}>
-              <Stack className="stack" spacing={2} ml={"50px"}>
-                <h4>{"Add entry"}</h4>
+            </div>
+
+            {/* Entry Column */}
+            <div className="entry">
+              <div className="stack">
+                <h4>Add entry</h4>
                 <div className="filter">
-                  <Box sx={{ minWidth: 120 }}>
-                    <div> {"Weight: "}</div>
-                    <input type="number" value={weightAmt} onChange={(e) => setWeightAmt(e.target.value)} />
-                    <div> {"Date: "}</div>
-                    <input type="date" value={weightDate} onChange={(e) => setWeightDate(e.target.value)} />
-                  </Box>
+                  <div>Weight:</div>
+                  <input type="number" value={weightAmt} onChange={(e) => setWeightAmt(e.target.value)} />
+                  <div>Date:</div>
+                  <input type="date" value={weightDate} onChange={(e) => setWeightDate(e.target.value)} />
                 </div>
-                <Button variant="contained" color="success" size="large" className="button" onClick={handleAddWeight}> Add Entry </Button>
-              </Stack>
-            </Box>
-          </Stack>
+                <Button className="button" onClick={handleAddWeight}> Add Entry </Button>
+              </div>
+            </div>
+          </div>
         </TabPanel>
 
         {/* Sleep content tab */}
         <TabPanel className="contents tab" value={value} index={1} >
-          <Stack className="tab container" spacing={0} direction="row">
-            <Stack className="contents stack" width={"40%"} spacing={0} alignItems={"center"} justifyContent={"center"}>
-              <h4>{"View sleep"}</h4>
-              <Box sx={{ width: '100%', height: 370, maxWidth: 360, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
-                <Paper style={{ maxHeight: 400, overflow: 'auto' }}>
+          <div className="tab container">
+            <div className="contents stack">
+              <h4>View sleep</h4>
+              <div className="list">
+                <Paper>
                   <List>
                     {sleepLog?.map((entry) => listSleep(entry))}
                   </List>
                 </Paper>
-              </Box>
-            </Stack>
-            {/* sleep bar chart */}
-            <Stack className="contents stack" spacing={0} alignItems={"center"} justifyContent={"center"}>
-              <Box>
-                <h4 className="sectionTitle">{"Sleep record"}</h4>
-              </Box>
-              <Box>
+              </div>
+            </div>
+
+            <div className="contents stack">
+              <h4 className="sectionTitle">Sleep record</h4>
+              <Box sx={{ width: '100%', flexGrow: 1 }}>
                 {sleepchart}
               </Box>
-            </Stack>
-            <Box className="entry" sx={{ width: '40%' }}>
-              <Stack className="stack" spacing={2} ml={"50px"}>
-                <h4>{"Add entry"}</h4>
+            </div>
+
+            <div className="entry">
+              <div className="stack">
+                <h4>Add entry</h4>
                 <div className="filter">
-                  <Box sx={{ minWidth: 120 }}>
-                    <div> {"Length: "}</div>
-                    <input type="number" value={sleepLength} onChange={(e) => setSleepLength(e.target.value)} />
-                    <div> {"Date: "}</div>
-                    <input type="datetime-local" value={sleepDate} onChange={(e) => setSleepDate(e.target.value)} />
-                  </Box>
+                  <div>Length:</div>
+                  <input type="number" value={sleepLength} onChange={(e) => setSleepLength(e.target.value)} />
+                  <div>Date:</div>
+                  <input type="datetime-local" value={sleepDate} onChange={(e) => setSleepDate(e.target.value)} />
                 </div>
-                <Button variant="contained" color="success" size="large" className="button" onClick={handleAddSleep}> Add Entry </Button>
-              </Stack>
-            </Box>
-          </Stack>
+                <Button className="button" onClick={handleAddSleep}> Add Entry </Button>
+              </div>
+            </div>
+          </div>
         </TabPanel>
 
         {/* Water content tab */}
         <TabPanel className="contents tab" value={value} index={2} >
-          <Stack className="tab container" spacing={0} direction="row">
-            <Stack className="contents stack" width={"40%"} spacing={0} alignItems={"center"} justifyContent={"center"}>
-              <h4>{"View water intake"}</h4>
-              <Box sx={{ width: '100%', height: 370, maxWidth: 360, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
-                <Paper style={{ maxHeight: 400, overflow: 'auto' }}>
+          <div className="tab container">
+            <div className="contents stack">
+              <h4>View water intake</h4>
+              <div className="list">
+                <Paper>
                   <List>
                     {waterLog?.map((entry) => listWater(entry))}
                   </List>
                 </Paper>
-              </Box>
-            </Stack>
-            {/* water bar chart */}
-            <Stack className="contents stack" spacing={0} alignItems={"center"} justifyContent={"center"}>
-              <Box>
-                <h4 className="sectionTitle">{"Water record"}</h4>
-              </Box>
-              <Box>
+              </div>
+            </div>
+
+            <div className="contents stack">
+              <h4 className="sectionTitle">Water record</h4>
+              <Box sx={{ width: '100%', flexGrow: 1 }}>
                 {waterchart}
               </Box>
-            </Stack>
-            <Box className="entry" sx={{ width: '40%' }}>
-              <Stack className="stack" justifyItems={"center"} justifyContent={"center"} spacing={2} ml={"50px"}>
-                <h4>{"Add entry"}</h4>
+            </div>
+
+            <div className="entry">
+              <div className="stack">
+                <h4>Add entry</h4>
                 <div className="filter">
-                  <Box sx={{ minWidth: 120 }}>
-                    <div> {"Intake (cups): "}</div>
-                    <input type="number" value={waterIntake} onChange={(e) => setWaterIntake(e.target.value)} />
-                    <div> {"Date: "}</div>
-                    <input type="date" value={waterDate} onChange={(e) => setWaterDate(e.target.value)} />
-                  </Box>
+                  <div>Intake (cups):</div>
+                  <input type="number" value={waterIntake} onChange={(e) => setWaterIntake(e.target.value)} />
+                  <div>Date:</div>
+                  <input type="date" value={waterDate} onChange={(e) => setWaterDate(e.target.value)} />
                 </div>
-                <Button variant="contained" color="success" size="large" className="button" onClick={handleAddWater}> Add Entry </Button>
-                <Paper style={{
-                  maxWidth: 250,
-                  maxHeight: 355,
-                }}
-                  elevation={3}>
+                <Button className="button" onClick={handleAddWater}> Add Entry </Button>
+
+                <Paper className="recommendation" style={{ marginTop: '20px', padding: '10px' }}>
                   <List>
-                    <ListItem
-                      component="div"
-                      disablePadding
-                      sx={{
-                        paddingLeft: '16px', // Add left padding
-                        paddingRight: '4px', // Add left padding
-                        borderBottom: '1px solid #e0e0e0', // Line between items
-                        marginBottom: '8px', // Spacing between items
-                        paddingBottom: '8px', // Padding at the bottom of the item
-                        paddingTop: '4px', // Add left padding
-                      }}
-                    >
+                    <ListItem disablePadding>
                       <b>Recommended Water Intake:</b>
                     </ListItem>
                     <ListItem>
@@ -532,41 +511,46 @@ const OtherHealthTracker = () => {
                     </ListItem>
                   </List>
                 </Paper>
-              </Stack>
-            </Box>
-          </Stack>
+              </div>
+            </div>
+          </div>
         </TabPanel>
 
         {/* Supplement content tab */}
         <TabPanel className="contents tab" value={value} index={3} >
-          <Stack className="tab container" spacing={0} direction="row">
-            <Stack className="contents stack" width={"40%"} spacing={0} alignItems={"center"} justifyContent={"center"}>
-              <h4>{"View supplement intake"}</h4>
-              <Box sx={{ width: '100%', height: 370, maxWidth: 360, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
-                <Paper style={{ maxHeight: 400, overflow: 'auto' }}>
+          <div className="tab container">
+            <div className="contents stack">
+              <h4>View supplement intake</h4>
+              <div className="list">
+                <Paper>
                   <List>
                     {supplementLog?.map((entry) => listSupplements(entry))}
                   </List>
                 </Paper>
-              </Box>
-            </Stack>
-            <Box className="entry" sx={{ width: '40%' }}>
-              <Stack className="stack" spacing={2} ml={"50px"}>
-                <h4>{"Add entry"}</h4>
+              </div>
+            </div>
+
+            {/* Empty Middle Column for Layout Balance or Info */}
+            <div className="contents stack" style={{ justifyContent: 'center' }}>
+              <h4>Supplement Log</h4>
+              <p style={{ textAlign: 'center', color: '#aaa' }}>Track your daily supplements here.</p>
+            </div>
+
+            <div className="entry">
+              <div className="stack">
+                <h4>Add entry</h4>
                 <div className="filter">
-                  <Box sx={{ minWidth: 120 }}>
-                    <div> {"Supplement:"}</div>
-                    <input type="string" value={suppName} onChange={(e) => setSupplement(e.target.value)} />
-                    <div> {"Intake (pills): "}</div>
-                    <input type="number" value={suppAmt} onChange={(e) => setSuppAmt(e.target.value)} />
-                    <div> {"Date: "}</div>
-                    <input type="date" value={suppDate} onChange={(e) => setSuppDate(e.target.value)} />
-                  </Box>
+                  <div>Supplement:</div>
+                  <input type="text" value={suppName} onChange={(e) => setSupplement(e.target.value)} />
+                  <div>Intake (pills):</div>
+                  <input type="number" value={suppAmt} onChange={(e) => setSuppAmt(e.target.value)} />
+                  <div>Date:</div>
+                  <input type="date" value={suppDate} onChange={(e) => setSuppDate(e.target.value)} />
                 </div>
-                <Button variant="contained" color="success" size="large" className="button" onClick={handleAddSupps}> Add Entry </Button>
-              </Stack>
-            </Box>
-          </Stack>
+                <Button className="button" onClick={handleAddSupps}> Add Entry </Button>
+              </div>
+            </div>
+          </div>
         </TabPanel>
       </Box>
     </div>

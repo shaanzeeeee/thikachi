@@ -7,6 +7,7 @@ import { AuthContext } from "../../utils/authentication/auth-context";
 import { useEffect, useRef, useContext, useState } from "react";
 import RegexUtil from "../../utils/regex-util";
 import ROUTES from "../../routes";
+import { motion, AnimatePresence } from "framer-motion";
 
 /**
  * Returns a react component consisting of the Login page. Includes all logic relevant to logging in.
@@ -31,18 +32,18 @@ export default function Login() {
 
     /* Authentication context */
     const { dispatch } = useContext(AuthContext);
-    
+
     /* The current user */
     const [user, setUser] = useState({}); // begin with {} instead of null b/c useEffect detects changes to null as well
 
     /* Handles logging in the user */
     const handleLogin = (e) => {
         /* Prevent default event behavior */
-        e.preventDefault(); 
+        e.preventDefault();
 
         /* strip non-digits if user is trying to login with phone number */
         const loginMethod = RegexUtil.isValidPhoneFormat(emailOrPhoneOrUsername) ? RegexUtil.stripNonDigits(emailOrPhoneOrUsername) : emailOrPhoneOrUsername;
-                
+
         /* Login and store the user in cache (authentication context) */
         login({ loginMethod, password }, dispatch).then(
             returnedUser => setUser(returnedUser)
@@ -50,7 +51,7 @@ export default function Login() {
     }
 
     /* After log in attempt, set flag for whether or not it was a successful attempt */
-    const isFirstRender = useRef(true); 
+    const isFirstRender = useRef(true);
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
@@ -62,7 +63,7 @@ export default function Login() {
     }, [user]);
 
     /* Gets location that user navigated from */
-    const location = useLocation(); 
+    const location = useLocation();
 
     /* Gets whether user just registered (navigated from register page) */
     useEffect(() => {
@@ -86,48 +87,81 @@ export default function Login() {
         <div className="login">
             <div className="top">
                 <div className="wrapper">
-                    <img
+                    <motion.img
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
                         className="logo"
                         src={logo}
-                        alt=""
+                        alt="Titan Logo"
                     />
                 </div>
             </div>
 
-            <div className="container">
-                <div className="recentlyRegisteredMessage"> {/* message if brought to login after registering */}
-                    <p style={{ visibility: !recentlyRegistered && "hidden" }}>
-                        {JUST_REGISTERED_MESSAGE}
-                    </p>
-                </div>
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="container"
+            >
+                <AnimatePresence>
+                    {recentlyRegistered && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="recentlyRegisteredMessage"
+                        >
+                            <p>{JUST_REGISTERED_MESSAGE}</p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
-                <form>
+                <motion.form
+                    whileHover={{ boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)" }}
+                >
                     <h1>Sign In</h1>
-                    <input type="email" placeholder="Phone number, username, or email" onChange={(e) => setEmailOrPhoneOrUsername(e.target.value)} />
-                    <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                    <button className="loginButton" onClick={handleLogin}>Sign In</button>
+                    <input
+                        type="text"
+                        placeholder="Phone number, username, or email"
+                        onChange={(e) => setEmailOrPhoneOrUsername(e.target.value)}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
 
-                    <div className="errorMessage"> {/* error message if invalid credentials (user == null) */}
-                        <p style={{ visibility: isValidCredentials && "hidden" }}>
-                            Invalid login credentials.
-                        </p>
-                    </div>
+                    <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="loginButton"
+                        onClick={handleLogin}
+                    >
+                        Sign In
+                    </motion.button>
+
+                    <AnimatePresence>
+                        {!isValidCredentials && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="errorMessage"
+                            >
+                                <p>Invalid login credentials.</p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                     <span>
-                        New to Titan?
+                        New to Thik Achi?
                         <b className="signUp">
                             <Link to={ROUTES.REGISTER} className="link"> Sign up now.</Link>
                         </b>
                     </span>
-                    {/* <small>
-                        <b className="forgotYourPassword"> <Link to="/forgotPassword" className="link">Forgot your password?</Link> </b>
-                    </small> */}
-                    {/* <small>
-                        This page is protected by Google reCAPTCHA to ensure you're not a
-                        bot. <b className="learnMore">Learn more</b>.
-                    </small> */}
-                </form>
-            </div>
+                </motion.form>
+            </motion.div>
         </div>
     );
 }

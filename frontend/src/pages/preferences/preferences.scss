@@ -1,111 +1,105 @@
+/* Modern Preferences Page Styles */
 .preferences {
+    min-height: 100vh;
     width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0, ) 0%,
-            rgba(0, 0, 0, 1) 100%),
-            url("../../components/titan_background.jpeg");
-    background-size: cover;
-    position: relative;
-    overflow: auto;
+    background:
+        radial-gradient(ellipse at 80% 0%, rgba(255, 165, 0, 0.1) 0%, transparent 40%),
+        radial-gradient(ellipse at 20% 100%, rgba(0, 212, 170, 0.1) 0%, transparent 40%),
+        var(--bg-primary);
+    padding-top: 90px;
+    padding-bottom: var(--space-3xl);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    .box {
-        margin: 10px;
-        width: auto;        
+    .preferencesContainer {
+        width: 100%;
+        max-width: 1000px;
+        padding: var(--space-lg);
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xl);
 
-        .header {
-            display: inline-flex;
-            padding: 8px;
-            font-size: 18px;
-            background-color: black;
-            border-radius: 5px;
-        }
+        /* Header Section */
+        .pageHeader {
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: var(--space-lg);
 
-        .spanAroundCheckBox {
-            display: inline-flex;
-            padding: 5px;
-            font-size: 5px;
-            background-color: rgba(220, 160, 30, .5);
-            border-radius: 5px;
-            margin: -6px 0px;
-
-            &:hover {
-                background-color: goldenrod;
+            .pageTitle {
+                font-size: var(--font-size-3xl);
+                font-weight: 700;
+                color: var(--text-primary);
+                margin-bottom: var(--space-sm);
+                display: block;
             }
 
-            width: 150px;
+            .pageDesc {
+                font-size: var(--font-size-lg);
+                color: var(--text-secondary);
+            }
         }
 
-        .pageTitle {
-            display: inline-flex;
-            padding: 8px;
-            font-size: 30px;
-            background-color: black;
-            border-radius: 5px;
+        /* Content Grid */
+        .contentGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-xl);
+
+            .column {
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-md);
+
+                .columnHeader {
+                    font-size: var(--font-size-xl);
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    padding-bottom: var(--space-sm);
+                    border-bottom: 1px solid var(--border-color);
+                    margin-bottom: var(--space-sm);
+                }
+
+                .MuiFormGroup-root {
+                    gap: var(--space-sm);
+
+                    .checkboxWrapper {
+                        background: var(--bg-secondary);
+                        border-radius: var(--radius-md);
+                        padding: var(--space-sm) var(--space-md);
+                        border: 1px solid transparent;
+                        transition: all var(--transition-fast);
+
+                        &:hover {
+                            background: var(--bg-glass-hover);
+                            border-color: var(--accent-primary);
+                        }
+
+                        .MuiFormControlLabel-root {
+                            margin: 0;
+                            width: 100%;
+
+                            .MuiCheckbox-root {
+                                color: var(--text-secondary);
+
+                                &.Mui-checked {
+                                    color: var(--accent-primary);
+                                }
+                            }
+
+                            .MuiTypography-root {
+                                font-size: var(--font-size-base);
+                                color: var(--text-primary);
+                            }
+                        }
+                    }
+                }
+            }
         }
-
-        .pageDesc {
-            display: inline-flex;
-            padding: 10px;
-            font-size: 14px;
-            background-color: black;
-            border-radius: 5px;
-        }
-    }
-
-    .about {
-        width: 30vw;
-        height: 60%;
-        position: relative;
-        top: 35vh;
-        left: 5vw;
-        color: white;
-        display: inline-flex;
-        flex-direction: column;
-        margin: 5%;
-    }
-
-    .column1 {
-        width: 25%;
-        height: 60%;
-        position: relative;
-        top: 30vh;
-        left: 15vw;
-        color: white;
-        display: inline-flex;
-        flex-direction: column;
-    }
-
-    .column2 {
-        width: 25%;
-        height: 60%;
-        position: relative;
-        top: 30vh;
-        left: 5vw;
-        color: white;
-        display: inline-flex;
-        flex-direction: column;
-    }
-
-    .column3 {
-        width: 25%;
-        height: 60%;
-        position: relative;
-        top: 38vh;
-        left: 10vw;
-        color: white;
-        display: inline-flex;
-        flex-direction: column;
-    }
-
-    .column4 {
-        width: 30%;
-        height: 60%;
-        position: relative;
-        top: 38vh;
-        left: 15vw;
-        color: white;
-        display: inline-flex;
-        flex-direction: column;
     }
 }

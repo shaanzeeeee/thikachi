@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ExerciseInfo = () => {
-    
+
     /* Rating Info */
     const [starClick1, setStarClick1] = useState(false);
     const [starClick2, setStarClick2] = useState(false);
@@ -108,23 +108,23 @@ const ExerciseInfo = () => {
     */
     const isFirstRender = useRef(true); // don't do anything on first render
     useEffect(() => {
-        
+
         const getExerciseInfo = async () => {
             try {
                 const response = await axios.get(`/users/anExercise/${userId}/${exerciseHash}`,
-                { headers: { token: `Bearer ${user.accessToken}` } });
+                    { headers: { token: `Bearer ${user.accessToken}` } });
                 console.log(`Bearer ${user.accessToken}`);
                 const item = response.data;
 
                 const priorCheck = await axios.get(`/users/priorExercise/${userId}/${item.exerciseName}`,
-                { headers: { token: `Bearer ${user.accessToken}` } });
+                    { headers: { token: `Bearer ${user.accessToken}` } });
 
-                if(priorCheck.data !== "No Prior History") {
+                if (priorCheck.data !== "No Prior History") {
                     setPriorExercise(priorCheck.data);
                 } else {
                     setPriorExercise("N/A");
                 }
-                
+
                 setExercise({
                     exerciseName: item.exerciseName,
                     sets: item.sets,
@@ -157,13 +157,13 @@ const ExerciseInfo = () => {
 
             // Refresh the food items after editing
             setExercise({
-                    exerciseName: exerciseName,
-                    sets: sets,
-                    reps: reps,
-                    time: time,
-                    exerciseType: exerciseType,
-                    hash: exerciseHash
-                });
+                exerciseName: exerciseName,
+                sets: sets,
+                reps: reps,
+                time: time,
+                exerciseType: exerciseType,
+                hash: exerciseHash
+            });
 
             // Clear the previous state
         } catch (error) {
@@ -191,211 +191,156 @@ const ExerciseInfo = () => {
         <div className="exerciseInfo">
             <Navbar />
 
-            <Box sx={{ // info for exercise facts (sx provides inline style information for this component)
-                background: '#0b0b0b',
-                width: .4,
-                maxHeight: 400,
-                position: 'relative',
-                float: 'left',
-                display: 'inline',
-                ml: 6,
-                top: 85,
-                borderRadius: 5,
-                overflow: 'auto',
-            }}>
-                <List>
-                    <ListItem sx={{
-                        background: '#242424',
-                        width: .98,
-                        mx: 'auto',
-                        borderRadius: 8,
-                    }}>
+            {/* Top Grid: Facts, Edit, Delete */}
+            <div className="infoGrid">
+                {/* Exercise Facts */}
+                <Box className="infoCard">
+                    <div className="cardHeader">
                         <Typography style={{ color: "#ebc034" }} fontWeight="bold">
                             Exercise Facts for: &nbsp; {exercise.exerciseName}
                         </Typography>
-                    </ListItem>
-                    <ListItem key="sets">
-                        <Typography fontWeight="bold">
-                            Sets: {exercise.sets}
-                        </Typography>
-                    </ListItem>
-                    <ListItem key="reps">
-                        <Typography fontWeight="bold">
-                            Reps: {exercise.reps}
-                        </Typography>
-                    </ListItem>
-                    <ListItem key="time">
-                        <Typography fontWeight="bold">
-                            Time: {exercise.time}
-                        </Typography>
-                    </ListItem>
-                    <ListItem key="type">
-                        <Typography fontWeight="bold">
-                            Exercise Type: {exercise.exerciseType}
-                        </Typography>
-                    </ListItem>
-                </List>
-            </Box>
+                    </div>
+                    <List>
+                        <ListItem key="sets">
+                            <Typography fontWeight="bold">
+                                Sets: {exercise.sets}
+                            </Typography>
+                        </ListItem>
+                        <ListItem key="reps">
+                            <Typography fontWeight="bold">
+                                Reps: {exercise.reps}
+                            </Typography>
+                        </ListItem>
+                        <ListItem key="time">
+                            <Typography fontWeight="bold">
+                                Time: {exercise.time}
+                            </Typography>
+                        </ListItem>
+                        <ListItem key="type">
+                            <Typography fontWeight="bold">
+                                Exercise Type: {exercise.exerciseType}
+                            </Typography>
+                        </ListItem>
+                    </List>
+                </Box>
 
-            <Box sx={{ // update exercise
-                background: '#0b0b0b',
-                width: .2,
-                maxHeight: 425,
-                position: 'relative',
-                float: 'left',
-                display: 'inline',
-                ml: 6,
-                top: 85,
-                borderRadius: 5,
-                overflow: 'auto',
-            }}>
-                <List>
-                    <ListItem sx={{
-                        background: '#242424',
-                        width: .98,
-                        mx: 'auto',
-                        borderRadius: 8,
-                    }}>
+                {/* Update Exercise */}
+                <Box className="infoCard">
+                    <div className="cardHeader">
                         <Typography fontWeight="bold">
                             Edit Exercise:
                         </Typography>
-                    </ListItem>
-                    <ListItem key="name">
-                        <Typography fontWeight="bold">
-                            Exercise Name:  
-                        </Typography>
-                        <input type="name" value={exerciseName} onChange={(e) => setExerciseName(e.target.value)}/>
-                    </ListItem>
-                    <ListItem key="sets">
-                        <Typography fontWeight="bold">
-                            Sets:
-                        </Typography>
-                        <input type="sets" value={sets} onChange={(e) => setSets(e.target.value)}/>
-                    </ListItem>
-                    <ListItem key="reps">
-                        <Typography fontWeight="bold">
-                            Reps:
-                        </Typography>
-                        <input type="reps" value={reps} onChange={(e) => setReps(e.target.value)} />
-                    </ListItem>
-                    <ListItem key="time">
-                        <Typography fontWeight="bold">
-                            Time:
-                        </Typography>
-                        <input type="duration" value={time} onChange={(e) => setTime(e.target.value)}/>
-                    </ListItem>
-                    <ListItem>
-                        <Box sx={{ minWidth: 120 }}>
-                            <FormControl error fullWidth sx={{ m: 1, minWidth: 120 }}  >
-                                <InputLabel>Exercise Type</InputLabel>
-                                <Select id="demo-simple-select" value={exerciseType} onChange={handleExerciseTypeChange} label="Filter" classes={{ root: classes.root, select: classes.selected }} >
-                                    <MenuItem value={"Weight Lifting"}>{`Weight Lifting`}</MenuItem>
-                                    <MenuItem value={"Cardio"}>{`Cardio`}</MenuItem>
-                                    <MenuItem value={"Other"}>{`Other`}</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
-                    </ListItem>
-                    <ListItem>
-                        <Button variant="contained" color="success" size="large" className="button" onClick={handleEditExercise}> Update Exercise </Button>
-                    </ListItem>
-                </List>
-            </Box>
+                    </div>
+                    <List>
+                        <ListItem key="name">
+                            <Typography fontWeight="bold">
+                                Exercise Name:
+                            </Typography>
+                            <input type="name" value={exerciseName} onChange={(e) => setExerciseName(e.target.value)} />
+                        </ListItem>
+                        <ListItem key="sets">
+                            <Typography fontWeight="bold">
+                                Sets:
+                            </Typography>
+                            <input type="sets" value={sets} onChange={(e) => setSets(e.target.value)} />
+                        </ListItem>
+                        <ListItem key="reps">
+                            <Typography fontWeight="bold">
+                                Reps:
+                            </Typography>
+                            <input type="reps" value={reps} onChange={(e) => setReps(e.target.value)} />
+                        </ListItem>
+                        <ListItem key="time">
+                            <Typography fontWeight="bold">
+                                Time:
+                            </Typography>
+                            <input type="duration" value={time} onChange={(e) => setTime(e.target.value)} />
+                        </ListItem>
+                        <ListItem>
+                            <Box sx={{ minWidth: 120, width: '100%' }}>
+                                <FormControl error fullWidth>
+                                    <InputLabel>Exercise Type</InputLabel>
+                                    <Select id="demo-simple-select" value={exerciseType} onChange={handleExerciseTypeChange} label="Filter" classes={{ root: classes.root, select: classes.selected }} >
+                                        <MenuItem value={"Weight Lifting"}>{`Weight Lifting`}</MenuItem>
+                                        <MenuItem value={"Cardio"}>{`Cardio`}</MenuItem>
+                                        <MenuItem value={"Other"}>{`Other`}</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </ListItem>
+                        <ListItem>
+                            <Button variant="contained" color="success" size="large" className="button" onClick={handleEditExercise}> Update Exercise </Button>
+                        </ListItem>
+                    </List>
+                </Box>
 
-            <Box sx={{ // delete exercise
-                background: '#0b0b0b',
-                width: .2,
-                maxHeight: 400,
-                position: 'relative',
-                float: 'left',
-                display: 'inline',
-                ml: 6,
-                top: 85,
-                borderRadius: 10,
-                overflow: 'auto',
-            }}>
-                <List>
-                    <ListItem sx={{
-                        background: '#242424',
-                        width: .98,
-                        mx: 'auto',
-                        borderRadius: 8,
-                    }}>
+                {/* Delete Exercise */}
+                <Box className="infoCard">
+                    <div className="cardHeader">
                         <Typography fontWeight="bold">
                             Delete This Exercise:
                         </Typography>
-                        <Link to={ROUTES.EXERCISE_TRACKER} className="link" onClick={handleDeleteExercise}>
-                            <Button variant="contained" color="error" size="large" className="button"> Delete </Button>
-                        </Link>
-                    </ListItem>
-                </List>
-            </Box>
+                    </div>
+                    <List>
+                        <ListItem>
+                            <Link to={ROUTES.EXERCISE_TRACKER} className="link" onClick={handleDeleteExercise} style={{ width: '100%' }}>
+                                <Button variant="contained" color="error" size="large" className="button"> Delete </Button>
+                            </Link>
+                        </ListItem>
+                    </List>
+                </Box>
+            </div>
 
-            <Box sx={{ //rating modal
-                background: '#0b0b0b',
-                width: 340,
-                height: 'auto',
-                overflow: 'hidden', //do not remove, will break the ratings appearance and idk why
-                position: 'absolute',
-                ml: 6, //left margin (percent of screen)
-                mt: 63, //top margin (percent of screen)
-                borderRadius: 10,
-            }}>
-                <Tooltip title={`Average Rating: `} placement="bottom">
-                    <IconButton color="inherit">
-                        <Info />
+            {/* Interaction Section: Ratings */}
+            <div className="interactionSection">
+                <Box className="ratingsBox">
+                    <Tooltip title={`Average Rating: `} placement="bottom">
+                        <IconButton color="inherit">
+                            <Info />
+                        </IconButton>
+                    </Tooltip>
+                    <IconButton color="inherit" onClick={handleClick1}>
+                        {starClick1 ? <Star /> : <StarOutline />}
                     </IconButton>
-                </Tooltip>
-                <IconButton color="inherit" onClick={handleClick1}>
-                    {starClick1 ? <Star /> : <StarOutline />}
-                </IconButton>
-                <IconButton color="inherit" onClick={handleClick2}>
-                    {starClick2 ? <Star /> : <StarOutline />}
-                </IconButton>
-                <IconButton color="inherit" onClick={handleClick3}>
-                    {starClick3 ? <Star /> : <StarOutline />}
-                </IconButton>
-                <IconButton color="inherit" onClick={handleClick4}>
-                    {starClick4 ? <Star/> : <StarOutline/>}
-                </IconButton>
-                <IconButton color="inherit" onClick={handleClick5}>
-                    {starClick5 ? <Star /> : <StarOutline />}
-                </IconButton>
-                <IconButton color="inherit" onClick={handleSavedClick}>
-                    {savedClick ? <Bookmark /> : <BookmarkBorder />}
-                </IconButton>
-            </Box>
-            <Box sx={{ ml: 6, mt: 70, width: .9, height: 'auto', position: 'absolute' }}>
-                <Box sx={{
-                    borderColor: '#242424',
-                    p: 1,
-                    m: 1,
-                    borderRadius: 4,
-                    border: '1px solid',
-                    width: 1,
-                    height: 'auto',
-                    display: 'block',
-                }}>
-                    <Typography fontWeight="bold">
-                        Most Recent Exercise History: 
+                    <IconButton color="inherit" onClick={handleClick2}>
+                        {starClick2 ? <Star /> : <StarOutline />}
+                    </IconButton>
+                    <IconButton color="inherit" onClick={handleClick3}>
+                        {starClick3 ? <Star /> : <StarOutline />}
+                    </IconButton>
+                    <IconButton color="inherit" onClick={handleClick4}>
+                        {starClick4 ? <Star /> : <StarOutline />}
+                    </IconButton>
+                    <IconButton color="inherit" onClick={handleClick5}>
+                        {starClick5 ? <Star /> : <StarOutline />}
+                    </IconButton>
+                    <IconButton color="inherit" onClick={handleSavedClick}>
+                        {savedClick ? <Bookmark /> : <BookmarkBorder />}
+                    </IconButton>
+                </Box>
+            </div>
+
+            {/* Bottom Section: History & Disclaimer */}
+            <div className="detailsSection">
+                <Box className="detailsBox">
+                    <Typography fontWeight="bold" gutterBottom>
+                        Most Recent Exercise History:
+                    </Typography>
+                    {/* Add history content here if available */}
+                    <Typography>
+                        {priorExercise !== "N/A" && priorExercise ? priorExercise : "No prior history found."}
                     </Typography>
                 </Box>
-                <Box sx={{
-                    borderColor: '#242424',
-                    p: 1,
-                    m: 1,
-                    borderRadius: 4,
-                    border: '1px solid',
-                    height: 'auto',
-                    width: 1,
-                    display: 'block',
-                }}>
-                    <Typography style={{ color: "#f74d40" }} fontWeight="bold" color='red'>
-                        Disclaimer: &nbsp;
+
+                <Box className="detailsBox disclaimer">
+                    <Typography style={{ color: "#f74d40" }} fontWeight="bold" gutterBottom>
+                        Disclaimer:
                     </Typography>
-                    Exercises should follow proper form - ego lifting is strictly prohibited.
+                    <Typography variant="body2" color="textSecondary" style={{ color: '#aaa' }}>
+                        Exercises should follow proper form - ego lifting is strictly prohibited.
+                    </Typography>
                 </Box>
-            </Box>
+            </div>
         </div>
     );
 };

@@ -6,11 +6,11 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { AuthContext } from "../../utils/authentication/auth-context";
 import axios from "axios";
 import {
-	Box,
-	List,
-	ListItem,
-	Paper,
-	FormGroup,
+    Box,
+    List,
+    ListItem,
+    Paper,
+    FormGroup,
     FormControlLabel,
     Checkbox
 } from "@mui/material";
@@ -36,19 +36,9 @@ const SavedMenuItems = () => {
 
         return (
             <Link to={`/foodInfo/${id}`} className="link">
-                <ListItem component="div" disablePadding button={true}
-                    sx={{
-                        paddingLeft: '16px', // Add left padding
-                        paddingRight: '16px', // Add right padding for symmetry
-                        borderBottom: '1px solid #e0e0e0', // Line between items
-                        marginBottom: '8px', // Spacing between items
-                        paddingBottom: '8px', // Padding at the bottom of the item
-                        display: 'flex', // Make this a flex container
-                        justifyContent: 'space-between', // Space between items
-                        alignItems: 'center', // Align items vertically in the center
-                    }}>
+                <ListItem component="div" disablePadding button={true}>
                     <span className="listItem">{name}</span>
-                    <span className="listRating">{rating}</span> {/* Added marginRight */}
+                    <span className="listRating">{rating}</span>
                 </ListItem>
             </Link>
         );
@@ -69,7 +59,7 @@ const SavedMenuItems = () => {
                 const courtsItems = response.data;
                 loading.current = false /* not loading anymore after items are loaded */
                 setCourtsMenu(courtsItems);
-            } catch (error) { 
+            } catch (error) {
                 loading.current = false /* not loading anymore after items are loaded */
                 setCourtsMenu([]);
                 console.log(error);
@@ -119,14 +109,14 @@ const SavedMenuItems = () => {
                         <span className="ratingSubtitle">out of 5</span>
                     </div>
                 </div>
-                {/* <h6>(click an item to see its info)</h6> */}
-                <Box sx={{ height: 400, width: 380, bgcolor: 'background.paper', borderRadius: 5 }} className="list">
-                    <Paper style={{ height: 400, overflow: 'auto' }}>
+
+                <div className="list">
+                    <Paper>
                         {
                             loading.current ? (
                                 <List>
-                                    <ListItem component="div" disablePadding button={true}>
-                                        <span className="header">{"Loading..."}</span>
+                                    <ListItem component="div" disablePadding>
+                                        <span className="header" style={{ padding: '20px', color: 'var(--text-secondary)' }}>Loading...</span>
                                     </ListItem>
                                 </List>
                             ) : (
@@ -136,36 +126,27 @@ const SavedMenuItems = () => {
                                     </List>
                                 ) : (
                                     <List>
-                                        <ListItem component="div" disablePadding button={true}>
-                                            <span className="header">{"No favorite items."}</span>
+                                        <ListItem component="div" disablePadding>
+                                            <span className="header" style={{ padding: '20px', color: 'var(--text-secondary)' }}>No favorite items.</span>
                                         </ListItem>
                                     </List>
                                 )
                             )
                         }
-
                     </Paper>
-                </Box>
+                </div>
+
                 <FormGroup className="checkbox">
-                    <FormControlLabel 
+                    <FormControlLabel
                         control={
                             <Checkbox
                                 size="small"
-                                color="secondary"
-                                sx={{
-                                    color: 'white', // This sets the color of the checkbox
-                                    '&.Mui-checked': {
-                                        color: 'white', // This sets the color when the checkbox is checked
-                                    },
-                                    '& .MuiSvgIcon-root': { // This targets the SVG icon (the box itself)
-                                        color: 'white', // Color for the unchecked state
-                                    },
-                                }}
+                                checked={shouldSort}
+                                onChange={handleSortClick}
                             />
                         }
-                        label={"Sort Alphabetically"} 
-                        checked={shouldSort} 
-                        onChange={handleSortClick} />
+                        label={"Sort Alphabetically"}
+                    />
                 </FormGroup>
             </div>
         </div>

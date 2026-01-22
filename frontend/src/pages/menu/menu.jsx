@@ -24,6 +24,7 @@ import { Mail, Phone, NearMe } from "@mui/icons-material";
 import Navbar from "../../components/navbar/navbar";
 import { AuthContext } from "../../utils/authentication/auth-context";
 import "./menu.scss";
+import { motion, AnimatePresence } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -317,8 +318,8 @@ const Menu = () => {
     }, [shouldSortFat]);
 
 
-      /*Sort by lowest calorie count */
-      useEffect(() => {
+    /*Sort by lowest calorie count */
+    useEffect(() => {
         if (shouldSortCalories) {
             setDisableSort(true);
             setDisableSortPop(true);
@@ -605,22 +606,31 @@ const Menu = () => {
         const rating = item.avgRating > 0 ? item.avgRating : "-";
 
         return (
-            <Link to={`/foodInfo/${id}`} className="link">
-                <ListItem component="div" disablePadding button={true}
-                    sx={{
-                        paddingLeft: '16px', // Add left padding
-                        paddingRight: '16px', // Add right padding for symmetry
-                        borderBottom: '1px solid #e0e0e0', // Line between items
-                        marginBottom: '8px', // Spacing between items
-                        paddingBottom: '8px', // Padding at the bottom of the item
-                        display: 'flex', // Make this a flex container
-                        justifyContent: 'space-between', // Space between items
-                        alignItems: 'center', // Align items vertically in the center
-                    }}>
-                    <span className="listItem">{name}</span>
-                    <span className="listRating">{rating}</span> {/* Added marginRight */}
-                </ListItem>
-            </Link>
+            <motion.div
+                key={id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.2 }}
+                layout
+            >
+                <Link to={`/foodInfo/${id}`} className="link">
+                    <ListItem component="div" disablePadding button={true}
+                        sx={{
+                            paddingLeft: '16px', // Add left padding
+                            paddingRight: '16px', // Add right padding for symmetry
+                            borderBottom: '1px solid #e0e0e0', // Line between items
+                            marginBottom: '8px', // Spacing between items
+                            paddingBottom: '8px', // Padding at the bottom of the item
+                            display: 'flex', // Make this a flex container
+                            justifyContent: 'space-between', // Space between items
+                            alignItems: 'center', // Align items vertically in the center
+                        }}>
+                        <span className="listItem">{name}</span>
+                        <span className="listRating">{rating}</span> {/* Added marginRight */}
+                    </ListItem>
+                </Link>
+            </motion.div>
         );
     }
 
@@ -767,33 +777,37 @@ const Menu = () => {
                     className="list"
                 >
                     <Paper style={{ height: 400, overflow: "auto" }}>
-                        {
-                            loading.current || courtsMenu[0] === "loading" ? (
-                                <List>
-                                    <ListItem component="div" disablePadding button={true}>
-                                        <span style={{ marginLeft: 10 }} className="header">{"Loading..."}</span>
-                                    </ListItem>
-                                </List>
-                            ) : (
-                                view === CUSTOM_PREFS && noCheckBoxesSelected() ? (
-                                    <List>
-                                        <ListItem component="div" disablePadding button={true}>
-                                            <span style={{ marginLeft: 10 }} className="header">{"Select some preferences/restrictions."}</span>
-                                        </ListItem>
-                                    </List>
-                                ) : (
-                                    courtsMenu.length !== 0 ? (
-                                        <List>{courtsMenu.map((item) => listItem(item))}</List>
-                                    ) : (
+                        <List component={motion.ul} layout>
+                            <AnimatePresence initial={false}>
+                                {
+                                    loading.current || courtsMenu[0] === "loading" ? (
                                         <List>
                                             <ListItem component="div" disablePadding button={true}>
-                                                <span style={{ marginLeft: 10 }} className="header">{"No items served at this time."}</span>
+                                                <span style={{ marginLeft: 10 }} className="header">{"Loading..."}</span>
                                             </ListItem>
                                         </List>
+                                    ) : (
+                                        view === CUSTOM_PREFS && noCheckBoxesSelected() ? (
+                                            <List>
+                                                <ListItem component="div" disablePadding button={true}>
+                                                    <span style={{ marginLeft: 10 }} className="header">{"Select some preferences/restrictions."}</span>
+                                                </ListItem>
+                                            </List>
+                                        ) : (
+                                            courtsMenu.length !== 0 ? (
+                                                courtsMenu.map((item) => listItem(item))
+                                            ) : (
+                                                <List>
+                                                    <ListItem component="div" disablePadding button={true}>
+                                                        <span style={{ marginLeft: 10 }} className="header">{"No items served at this time."}</span>
+                                                    </ListItem>
+                                                </List>
+                                            )
+                                        )
                                     )
-                                )
-                            )
-                        }
+                                }
+                            </AnimatePresence>
+                        </List>
                     </Paper>
                 </Box>
             </div>

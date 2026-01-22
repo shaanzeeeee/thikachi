@@ -1,146 +1,254 @@
+/* Modern Menu Page Styles */
 .menu {
+    min-height: 100vh;
     width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0, ) 0%,
-            rgba(0, 0, 0, 1) 100%),
-            url("../../components/titan_background.jpeg");
-    background-size: cover;
-    position: relative;
-    color: white;
+    background:
+        radial-gradient(ellipse at 80% 0%, rgba(124, 58, 237, 0.1) 0%, transparent 40%),
+        radial-gradient(ellipse at 20% 100%, rgba(0, 212, 170, 0.1) 0%, transparent 40%),
+        var(--bg-primary);
+    padding-top: 90px;
+    padding-bottom: var(--space-3xl);
     display: flex;
-    align-items: center;
     justify-content: center;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
 
-    .header {
-        font-weight: bold;
-    }
-    
-    .text {
-        color: white;
-    }
-    
-    .space {
-        margin-top: 5px;
-    }
-    
-    .filter {
-        margin-left: 50px;
-        margin-right: -150px;
-    }
-
-    .smallListItem {
-        font-size: 14px;
-    }
-
-    .listItem {
-        // font-size: 18px;
-        font-weight: normal;
-    }
-    
-    //for use in stack component (padding is weird)
-    .stack {
-        margin-left: 25px;
-        margin-right: 15px;
-        .stackedFilter {
-            margin-top: 0px;
-            padding-top: 10px;
-        }
-    }
-
-    .searchBar {
-        transform: translate(7.5px, 0%);
-        margin-bottom: 10px;
-        z-index: 999;
-    }
-
-    .customPrefs {
-        transform: translate(-40px, 0%);
-    }
-    
-    .menuItems {
-        margin-left: 32.5px;
-        transform: translate(10px, 0%);
-    }
-    
+    /* Left Column (Times & Busy) */
     .menuTimes {
-        // margin-left: -125px;
-        transform: translate(25px, 0px);
-    }
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        min-width: 300px;
 
-    .filters {
-        transform: translate(-5px, 0px);
-    }
-
-    /* Makes filter text white */
-    .MuiSelect-select {
-        color: white;
-    }
-    
-    .sectionTitle {
-        margin-top: 25px;
-    }
-    
-    .evenMoreSpace {
-        margin-top: 35px;
-    }
-
-    .checkboxes {
-        // align-items: center;
-        transform: translate(15px, 0);
-    }
-
-    .howBusy {
-        margin-top: -25px; /* moves left column up a bit */
-    }
-    
-    .contactInfo {
-        font-weight: bold;
-        transform: translate(0px, 340px);
-        position: absolute;
-    
-        .icon {
-            transform: translate(0px, 5px);
+        .howBusy {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: var(--space-sm);
         }
-    
-        .location {
-            &:hover {
-                cursor: pointer;
+
+        .sectionTitle {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: var(--space-sm);
+            margin-top: var(--space-xl);
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Lists */
+        .list {
+            background: var(--bg-glass) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg) !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            max-height: none !important;
+            /* Allow auto height */
+            height: auto !important;
+
+            .MuiPaper-root {
+                background: transparent !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-height: 300px !important;
+            }
+
+            .MuiList-root {
+                padding: 0;
+            }
+
+            .MuiListItem-root {
+                color: var(--text-primary);
+                border-bottom: 1px solid var(--border-color);
+
+                .smallListItem {
+                    font-size: var(--font-size-sm);
+                    color: var(--text-secondary);
+                }
             }
         }
     }
 
-    .sectionHeader {
-        display: flex;
-        justify-content: space-between;
-        align-items: center; /* Ensures vertical alignment */
-    }
-    
-    .menuTitle {
-        margin-left: 16px; /* Adjust as needed */
-        font-size: larger; /* Makes the text a bit bigger */
-        font-size: 24px;
-    }
-    
-    .ratingHeader {
-        text-align: right;
-        margin-right: 16px; /* Adjust as needed */
+    /* Right Column (Menu Items) */
+    .menuItems {
+        flex: 1;
+        max-width: 600px;
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Centers the content vertically */
-        font-size: 14px;
+        gap: var(--space-md);
+
+        .sectionHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: var(--space-sm);
+
+            .pageTitle {
+                font-size: var(--font-size-2xl);
+                font-weight: 700;
+                color: var(--text-primary);
+                margin: 0;
+            }
+
+            .ratingHeader {
+                text-align: right;
+
+                .ratingTitle {
+                    display: block;
+                    font-size: var(--font-size-sm);
+                    font-weight: 600;
+                    color: var(--text-primary);
+                }
+
+                .ratingSubtitle {
+                    display: block;
+                    font-size: var(--font-size-xs);
+                    color: var(--text-secondary);
+                }
+            }
+        }
+
+        /* Main Menu List */
+        .list {
+            background: var(--bg-glass) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl) !important;
+            width: 100% !important;
+            height: 600px !important;
+
+            .MuiPaper-root {
+                background: transparent !important;
+                box-shadow: none !important;
+                height: 100% !important;
+            }
+
+            .MuiListItem-root {
+                border-bottom: 1px solid var(--border-color);
+                transition: background var(--transition-fast);
+                padding: var(--space-md) !important;
+
+                &:hover {
+                    background: var(--bg-glass-hover);
+                }
+
+                .listItem {
+                    font-size: var(--font-size-base);
+                    font-weight: 500;
+                    color: var(--text-primary);
+                }
+
+                .listRating {
+                    font-weight: 700;
+                    color: var(--accent-primary);
+                    background: rgba(0, 212, 170, 0.1);
+                    padding: 2px 8px;
+                    border-radius: var(--radius-sm);
+                }
+            }
+        }
     }
-    
-    .ratingTitle {
-        font-weight: bold;
-        font-size: larger; /* Makes the text a bit bigger */
+
+    /* Filters Column */
+    .filters {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+        min-width: 250px;
+        background: var(--bg-glass);
+        padding: var(--space-lg);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-color);
+        height: fit-content;
+
+        h4 {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            color: var(--text-primary);
+        }
+
+        .MuiFormControl-root {
+            width: 100%;
+
+            .MuiInputLabel-root {
+                color: var(--text-secondary);
+            }
+
+            .MuiOutlinedInput-root {
+                // Select input
+                color: var(--text-primary);
+
+                .MuiOutlinedInput-notchedOutline {
+                    border-color: var(--border-color);
+                }
+
+                &:hover .MuiOutlinedInput-notchedOutline {
+                    border-color: var(--accent-primary);
+                }
+
+                &.Mui-focused .MuiOutlinedInput-notchedOutline {
+                    border-color: var(--accent-primary);
+                }
+            }
+
+            .MuiSelect-icon {
+                color: var(--text-secondary);
+            }
+        }
+
+        /* Checkboxes */
+        .MuiFormGroup-root {
+            .MuiFormControlLabel-root {
+                .MuiTypography-root {
+                    color: var(--text-secondary);
+                    font-size: var(--font-size-sm);
+                }
+
+                .MuiCheckbox-root {
+                    color: var(--text-secondary);
+
+                    &.Mui-checked {
+                        color: var(--accent-primary);
+                    }
+                }
+            }
+        }
+
+        /* Search Bar */
+        .MuiAutocomplete-root {
+            .MuiOutlinedInput-root {
+                input {
+                    color: var(--text-primary);
+                }
+
+                fieldset {
+                    border-color: var(--border-color);
+                }
+
+                &:hover fieldset {
+                    border-color: var(--accent-primary);
+                }
+
+                &.Mui-focused fieldset {
+                    border-color: var(--accent-primary);
+                }
+            }
+
+            .MuiInputLabel-root {
+                color: var(--text-secondary);
+            }
+        }
     }
-    
-    .ratingSubtitle {
-        display: block; /* Makes the text appear below */
-        color: grey; /* Sets the color to grey */
-        font-size: 12px; /* Makes the text smaller */
-        margin-bottom: 2.5px;
-    }
-    
 }

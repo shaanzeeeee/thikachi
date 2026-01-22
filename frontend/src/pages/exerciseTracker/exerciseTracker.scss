@@ -1,64 +1,164 @@
+/* Modern Exercise Tracker Styles */
 .exerciseTracker {
+    min-height: 100vh;
     width: 100vw;
-    height: 100vh;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0,) 0%, 
-        rgba(0, 0, 0, 1) 100%
-        ), 
-        url("../../components/titan_background.jpeg");
-    background-size: cover;
-    position: relative;
-    color: white;
+    background:
+        radial-gradient(ellipse at 10% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(ellipse at 90% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+        var(--bg-primary);
+    padding-top: 90px;
+    padding-bottom: var(--space-3xl);
     display: flex;
-    align-items: center;
     justify-content: center;
-
-    .header {
-        font-weight: normal;
-    }
-
-    // set text color of legend to white
-    .MuiChartsAxis-tickLabel tspan {
-        fill: white;
-    }
-
-    .MuiOutlinedInput-input {
-        fill: white;
-    }
-    
-    .text {
-        color: white;
-    }
-    
-    .space {
-        margin-top: 5px;
-    }
-    
-    .filter {
-        margin-left: 10px;
-    }
-    
-    .filter2 {
-        margin-top: 10px;
-        margin-left: 10px;
-    }
-
-    .button {
-        margin-top: 20px;
-    }
-    
-    .moreSpace {
-        margin-top: 25px;
-    }
+    gap: var(--space-xl);
+    flex-wrap: wrap;
 
     h4 {
         text-align: center;
-        margin-bottom: 5px;
-        font-size: 18px;
+        margin-bottom: var(--space-md);
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--text-primary);
+
+        &.moreSpace {
+            margin-top: 0;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
     }
 
-    .checkbox {
-        // align-items: center;
+    .stack {
+        padding: var(--space-lg);
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        margin: var(--space-md) !important;
+        min-width: 350px;
+    }
+
+    .list {
+        background: var(--bg-secondary) !important;
+        border-radius: var(--radius-md) !important;
+        overflow: hidden;
+
+        .MuiPaper-root {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .MuiList-root {
+            padding: 0;
+        }
+
+        .MuiListItem-root {
+            color: var(--text-primary);
+            transition: background var(--transition-fast);
+            border-bottom: 1px solid var(--border-color);
+
+            &:hover {
+                background: var(--bg-glass-hover);
+            }
+
+            .header {
+                font-size: var(--font-size-sm);
+                font-weight: 500;
+            }
+        }
+    }
+
+    /* Input Sections */
+    .filter,
+    .filter2 {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+        margin: 0 !important;
+        width: 100%;
+
+        >div {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-xs);
+        }
+
+        input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            font-family: var(--font-family);
+            font-size: var(--font-size-sm);
+            color: var(--text-primary);
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: all var(--transition-fast);
+            margin-bottom: var(--space-md);
+
+            &:focus {
+                border-color: var(--accent-primary);
+            }
+        }
+    }
+
+    /* Select Dropdowns */
+    .MuiFormControl-root {
+        width: 100% !important;
+        min-width: unset !important;
+        margin: var(--space-md) 0 !important;
+
+        .MuiInputLabel-root {
+            color: var(--text-secondary);
+        }
+
+        .MuiOutlinedInput-root {
+            color: var(--text-primary);
+
+            .MuiOutlinedInput-notchedOutline {
+                border-color: var(--border-color);
+            }
+
+            &:hover .MuiOutlinedInput-notchedOutline {
+                border-color: var(--accent-primary);
+            }
+
+            &.Mui-focused .MuiOutlinedInput-notchedOutline {
+                border-color: var(--accent-primary);
+            }
+        }
+
+        .MuiSelect-icon {
+            color: var(--text-secondary);
+        }
+    }
+
+    /* Buttons */
+    .button {
+        background: var(--accent-gradient) !important;
+        font-weight: 600;
+        text-transform: none;
+        border-radius: var(--radius-md);
+        width: 100%;
+        margin-top: var(--space-md) !important;
+
+        &:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+    }
+
+    /* Charts */
+    .MuiChartsAxis-tickLabel tspan {
+        fill: var(--text-secondary) !important;
+    }
+
+    .MuiChartsAxis-line {
+        stroke: var(--border-color) !important;
+    }
+
+    .MuiChartsAxis-tick {
+        stroke: var(--border-color) !important;
     }
 }

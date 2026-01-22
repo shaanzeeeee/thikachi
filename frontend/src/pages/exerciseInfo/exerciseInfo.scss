@@ -1,202 +1,182 @@
-// Styling for page displaying info related to a menu item
+/* Modern Exercise Info Page Styles */
 .exerciseInfo {
+    min-height: 100vh;
     width: 100vw;
-    height: 100vh;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0,) 0%, 
-        rgba(0, 0, 0, 1) 100%
-        ), 
-        url("../../components/titan_background.jpeg");
-    background-size: cover;
-    position: relative;
-    color: white; 
-    overflow: auto;
+    background:
+        radial-gradient(ellipse at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+        radial-gradient(ellipse at 20% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+        var(--bg-primary);
+    padding-top: 90px;
+    padding-bottom: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xl);
+    overflow-x: hidden;
 
-    .nutrition {
-        margin: 0px 40px;
+    /* Grid Layout for Top Section */
+    .infoGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: var(--space-lg);
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 var(--space-lg);
+    }
 
-        .nutritionFacts {
-            color: white;
-            transform: translate(0px, 100px);
-            .header {
-                font-weight: bold;
-                background-color: none;
-                border: solid goldenrod;
-                width:fit-content;
-            }
-            .nutritionItems {
-                background-color: var(--main-color);
-                border-radius: 5px;
+    /* Info Cards (Facts, Edit, Delete) */
+    .infoCard {
+        background: var(--bg-glass) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl) !important;
+        min-height: 400px;
+        height: auto;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        /* Header */
+        .cardHeader {
+            background: var(--bg-secondary) !important;
+            border-bottom: 1px solid var(--border-color);
+            padding: var(--space-md);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* List Content */
+        .MuiList-root {
+            padding: var(--space-md) !important;
+            overflow-y: auto;
+            width: 100%;
+
+            .MuiListItem-root {
+                border-bottom: 1px solid var(--border-color);
+                padding: var(--space-md) 0;
                 display: flex;
                 flex-direction: column;
-                position: absolute;
-                width: 400px;
-            }
-    
-            .link {
-                padding: 10px 0px;
-                margin-right: 0px;
-                cursor: pointer;
-            }
-            
-            span {
-                padding: 10px;
-                cursor: pointer;
-            }
-    
-            .link {
-                &:hover {
-                    background-color: goldenrod;
-                    border-radius: 5px;
+                align-items: flex-start;
+                gap: var(--space-sm);
+
+                &:last-child {
+                    border-bottom: none;
                 }
-            }
-        }
-        .percent {
-            transform: translate(0px, 300px);
-            font-size: small;
-            font-weight: bold;
-        
-        }
-    }
-    .dietaryTags {
-        .tags {
-            color: white;
-            transform: translate(500px, 60px);
-            .header {
-                font-weight: bold;
-                background-color: none;
-                border: solid goldenrod;
-                width:fit-content;
-            }
-            .tagNames {
-                background-color: var(--main-color);
-                border-radius: 5px;
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                width: 400px;
-            }
-    
-            .link {
-                padding: 10px 0px;
-                margin-right: 0px;
-                cursor: pointer;
-            }
-            
-            span {
-                padding: 10px;
-                cursor: pointer;
-            }
-    
-            .link {
-                &:hover {
-                    background-color: goldenrod;
-                    border-radius: 5px;
+
+                /* Inputs inside list items */
+                input {
+                    background: var(--bg-primary);
+                    border: 1px solid var(--border-color);
+                    color: var(--text-primary);
+                    padding: var(--space-sm);
+                    border-radius: var(--radius-md);
+                    outline: none;
+                    width: 100%;
+                    font-size: var(--font-size-base);
+
+                    &:focus {
+                        border-color: var(--accent-primary);
+                    }
                 }
             }
         }
     }
-    .ratings {
-        .tags {
-            color: white;
-            transform: translate(500px, 200px);
-            .header {
-                font-weight: bold;
-                background-color: none;
-                border: solid goldenrod;
-                width:fit-content;
+
+    /* Interaction Section (Ratings) */
+    .interactionSection {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 var(--space-lg);
+    }
+
+    /* Ratings Box */
+    .ratingsBox {
+        background: var(--bg-glass);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: var(--space-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-md);
+        min-width: 300px;
+
+        .MuiIconButton-root {
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+
+            &:hover {
+                color: #FFD700;
             }
-            .tagNames {
-                background-color: var(--main-color);
-                border-radius: 5px;
-                display: flex;
-                position: absolute;
-                width: 470px;
-            }
-    
-            .link {
-                padding: 10px 0px;
-                margin-right: 0px;
-                cursor: pointer;
-            }
-            
-            span {
-                padding: 10px;
-                cursor: pointer;
-            }
-    
-            .link {
-                &:hover {
-                    background-color: goldenrod;
-                    border-radius: 5px;
-                }
+
+            svg {
+                font-size: 28px;
             }
         }
     }
-    .upcomingMeals {
-        .meals {
-            color: white;
-            transform: translate(1000px, 35px);
-            .header {
-                font-weight: bold;
-                background-color: none;
-                border: solid goldenrod;
-                width:fit-content;
-            }
-            .mealLocation {
-                background-color: var(--main-color);
-                border-radius: 5px;
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                width: 400px;
-            }
-    
-            .link {
-                padding: 10px 0px;
-                margin-right: 0px;
-                cursor: pointer;
-            }
-            
-            span {
-                padding: 10px;
-                cursor: pointer;
-            }
-    
-            .link {
-                &:hover {
-                    background-color: goldenrod;
-                    border-radius: 5px;
-                }
+
+    /* Details Section (History & Disclaimer) */
+    .detailsSection {
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 var(--space-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+
+        .detailsBox {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+
+            &.disclaimer {
+                border-color: rgba(248, 113, 113, 0.3);
+                background: rgba(248, 113, 113, 0.05);
             }
         }
     }
-    .ingredients {
-        transform: translate(0px, 450px);
-        margin: 0px 40px;
-        .ingredientHeader{
-            font-weight: bold;
-            background-color: none;
-            border: solid goldenrod;
-            width:fit-content;
-            transform: translateX(650px);
 
+    /* Buttons */
+    .button {
+        width: 100%;
+        font-weight: 600;
+        text-transform: none;
+        border-radius: var(--radius-md);
+        padding: var(--space-sm);
+        margin-top: var(--space-sm);
+    }
+
+    .MuiFormControl-root {
+        width: 100%;
+        margin-top: var(--space-md);
+
+        .MuiOutlinedInput-root {
+            color: var(--text-primary);
+
+            fieldset {
+                border-color: var(--border-color);
+            }
+
+            &:hover fieldset {
+                border-color: var(--accent-primary);
+            }
+
+            &.Mui-focused fieldset {
+                border-color: var(--accent-primary);
+            }
         }
 
-    }
-    .disclaimer {
-        transform: translate(0px, 600px);
-        font-weight: lighter;
-        .disclaimerHeader{
-            font-weight: bold;
-            background-color: none;
-            border: solid red;
-            width:fit-content;
-            transform: translateX(650px);
-
+        .MuiInputLabel-root {
+            color: var(--text-secondary);
         }
 
+        .MuiSelect-icon {
+            color: var(--text-secondary);
+        }
     }
-    
 }

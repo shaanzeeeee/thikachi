@@ -30,52 +30,37 @@ const Settings = () => {
         <div className="settings">
             <Navbar />
             <div className="centered">
-                <Grid container rowSpacing={10} columnSpacing={{ xs: 10, sm: 2, md: 3 }}>
-                    <Grid item xs={6}>
-                        <div className="about">
-                            <Box className="box">
-                                <span className="pageTitle">{"Info & Settings"}</span>
-                            </Box>
-                        </div>
+                <Grid container spacing={4} direction="column" alignItems="center">
+                    <Grid item xs={12} className="about">
+                        <span className="pageTitle">Info & Settings</span>
                     </Grid>
 
-                    <Grid item xs={3}>
-                        <div className="column1">
-                            <Box className="box">
-                                <Link to={ROUTES.PERSONAL_INFO} className="link">
-                                    <span className="buttonText">Personal Information</span>
-                                </Link>
-                            </Box>
-                            <Box className="box">
-                                <Link to={ROUTES.PREFERENCES} className="link">
-                                    <span className="buttonText">Dietary Preferences</span>
-                                </Link>
-                            </Box>
-                            <Box className="box">
-                                {/* <Link to="/notifications" className="link"> */}
-                                    <span className="buttonText">Notifications</span>
-                                {/* </Link> */}
-                            </Box>
+                    <Grid item xs={12} sm={8} md={6} style={{ width: '100%' }}>
+                        <div className="box">
+                            <Link to={ROUTES.PERSONAL_INFO} className="link">
+                                <span className="buttonText">Personal Information</span>
+                            </Link>
                         </div>
-                    </Grid>
-
-                    <Grid item xs={3}>
-                        <div className="column2">
-                            <Box className="box">
-                                <Link to={ROUTES.REPORT_PROBLEM} className="link">
-                                    <span className="buttonText">Report a Problem</span>
-                                </Link>
-                            </Box>
-                            <Box className="box">
-                                {/* <Link to="/deleteAccount" className="link"> */}
-                                    <span className="buttonText">Delete Account</span>
-                                {/* </Link> */}
-                            </Box>
-                            <Box className="box">
-                                <Link to="/login" className="link">
-                                    <span className="buttonText" onClick={handleLogout}>Logout</span>
-                                </Link>
-                            </Box>
+                        <div className="box">
+                            <Link to={ROUTES.PREFERENCES} className="link">
+                                <span className="buttonText">Dietary Preferences</span>
+                            </Link>
+                        </div>
+                        <div className="box">
+                            <span className="buttonText">Notifications</span>
+                        </div>
+                        <div className="box">
+                            <Link to={ROUTES.REPORT_PROBLEM} className="link">
+                                <span className="buttonText">Report a Problem</span>
+                            </Link>
+                        </div>
+                        <div className="box">
+                            <span className="buttonText">Delete Account</span>
+                        </div>
+                        <div className="box">
+                            <Link to="/login" className="link" onClick={handleLogout}>
+                                <span className="buttonText">Logout</span>
+                            </Link>
                         </div>
                     </Grid>
                 </Grid>

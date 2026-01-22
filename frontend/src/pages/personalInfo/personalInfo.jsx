@@ -292,77 +292,72 @@ const PersonalInfo = () => {
                 <div className="container">
                     <form>
                         <h1>Personal Info</h1>
-                        <button type='button' className="infoButton">Username: <span>{username}</span> </button>
-                        <button type='button' className="infoButton">Email: <span>{email}</span></button>
-                        <button type='button' className="infoButton">Phone number: <span>{phoneNumber}</span></button>
-                        <button type='button' className="infoButton">Member since: <span>{membership}</span></button>
 
+                        {/* Display Current Info */}
+                        <div className="infoButton">Username: <span>{username}</span> </div>
+                        <div className="infoButton">Email: <span>{email}</span></div>
+                        <div className="infoButton">Phone number: <span>{phoneNumber}</span></div>
+                        <div className="infoButton">Member since: <span>{membership}</span></div>
+
+                        {/* Update Fields */}
                         <label>
-                            <div className="infoType"> {"Change username: "}</div>
+                            <div className="infoType">Change username:</div>
                             <input
-                                type="username"
+                                type="text"
                                 value={newUsername}
                                 onChange={(e) => setNewUsername(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleUpdateUsername(e)}
                             />
-                            <button onClick={handleUpdateUsername} className="formButton">Submit</button>
-
+                            <button onClick={handleUpdateUsername} className="formButton" type="button">Submit</button>
                         </label>
 
                         <label>
-                            <div className="infoType"> {"Change email: "}</div>
+                            <div className="infoType">Change email:</div>
                             <input
                                 type="email"
                                 value={newEmail}
                                 onChange={(e) => setNewEmail(e.target.value)}
-                                className="input"
                                 onKeyDown={(e) => e.key === 'Enter' && updateEmail(e)}
                             />
-                            <button onClick={updateEmail} className="formButton">Submit</button>
+                            <button onClick={updateEmail} className="formButton" type="button">Submit</button>
                         </label>
 
                         <label>
-                            <div className="infoType"> {"Change phone number: "}</div>
+                            <div className="infoType">Change phone:</div>
                             <input
-                                type="phone"
+                                type="tel"
                                 value={newNumber}
                                 onChange={(e) => setNewPhoneNumber(e.target.value)}
-                                className="input"
                                 onKeyDown={(e) => e.key === 'Enter' && updatePhone(e)}
                             />
-                            <button onClick={updatePhone} className="formButton">Submit</button>
+                            <button onClick={updatePhone} className="formButton" type="button">Submit</button>
                         </label>
 
                         <label>
-                            <div className="infoType"> {"Change password: "}</div>
+                            <div className="infoType">Change password:</div>
                             <input
                                 type="password"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                className="input"
                                 onKeyDown={(e) => e.key === 'Enter' && updatePassword(e)}
                             />
-                            <button onClick={updatePassword} className="formButton">Submit</button>
+                            <button onClick={updatePassword} className="formButton" type="button">Submit</button>
                         </label>
 
-                        { // error message if user enters invalid email regex or credentials already taken
-                            <div className="errorMessage"
-                                style={{
-                                    visibility: (!error && !successful) && "hidden",
-                                    color: messageColor
-                                }}>
-                                <p >
-                                    {message}
-                                </p>
-                            </div>
-                        }
+                        {/* Messages */}
+                        <div className="errorMessage"
+                            style={{
+                                visibility: (!error && !successful) ? "hidden" : "visible",
+                                color: messageColor
+                            }}>
+                            <p>
+                                {message}
+                            </p>
+                        </div>
 
-                        {/* <Link to="/profPic" className="link">
-                            <button className="button2">Edit profile picture </button>
-                        </Link> */}
-
+                        {/* Navigation */}
                         <Link to="/settings" className="link">
-                            <button className="backButton">Back</button>
+                            <button className="backButton" type="button">Back to Settings</button>
                         </Link>
                     </form>
                 </div>

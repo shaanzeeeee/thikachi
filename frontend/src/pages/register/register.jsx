@@ -1,12 +1,12 @@
 /* React page for registering a new account */
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./register.scss";
 import logo from "../../components/titan-clear-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useRef } from "react";
 import RegexUtil from "../../utils/regex-util";
 import ROUTES from "../../routes";
+import { motion, AnimatePresence } from "framer-motion";
 
 /**
  * Returns a react component consisting of the Register page. Includes all logic relevant to registering.
@@ -19,8 +19,8 @@ export default function Register() {
         EXISTING_CREDENTIALS_ERROR: "Email, phone number, or username already taken.",
         INVALID_EMAIL_ERROR: "Invalid email format.",
         INVALID_PHONE_ERROR: "Invalid phone format.",
-        INVALID_USERNAME_ERROR: "Invalid username. Username cannot contain spaces and minimum length must be at least ",
-        INVALID_PASSWORD_ERROR: "Invalid password. The length must be at least ",
+        INVALID_USERNAME_ERROR: "Invalid username. (No spaces, min length ",
+        INVALID_PASSWORD_ERROR: "Invalid password. (Min length ",
         GENERIC_SERVER_ERROR: "There was a problem registering your account. Please try again later.",
         DIDNT_AGREE_TERMS_ERROR: "You must agree to the terms and conditions before registering."
     }
@@ -54,20 +54,14 @@ export default function Register() {
 
     /* Toggle the show terms poppup */
     const handleShowTerms = (e) => {
-        /* prevent default event behavior or else registering won't work when clicked */
-        e.preventDefault(); 
-
-        if (e.key === 'Enter') {
-            handleRegister(e);
-        }
-
+        e.preventDefault();
         setShowTerms(!showTerms);
     }
 
     /* Toggle checkbox for terms and conditions */
     const handleAgreeTerms = (e) => {
         setTermsAgreed(!termsAgreed);
-    } 
+    }
 
     /* Returns true if the email box is already filled */
     function isEmailBoxFilled() {
@@ -76,8 +70,7 @@ export default function Register() {
 
     /* Handles when user clicks get started or hits enter upon starting registration */
     const handleGetStarted = (e) => {
-        /* prevent default event behavior */
-        e.preventDefault(); 
+        e.preventDefault();
 
         /* If all the fields are displayed, try submitting the form */
         if (clickedGetStarted) {
@@ -93,8 +86,7 @@ export default function Register() {
 
     /* Handles registration logic when user clicks 'Sign Up' or hits 'Enter' on the keyboard. */
     const handleRegister = (e) => {
-        /* prevent default event behavior or else registering won't work when clicked */
-        e.preventDefault(); 
+        e.preventDefault();
 
         /* Reset all error flags when attempting register */
         setIsValidCredentials(true);
@@ -125,14 +117,14 @@ export default function Register() {
             setIsValidCredentials(false);
             setErrorMessage(ERROR_MESSAGES.INVALID_PASSWORD_ERROR + RegexUtil.MIN_PASSWORD_LENGTH + ".");
             return;
-        }      
+        }
 
         /* Check if user agreed to terms and conditions */
         if (!termsAgreed) {
             setIsValidCredentials(false);
             setErrorMessage(ERROR_MESSAGES.DIDNT_AGREE_TERMS_ERROR);
             return;
-        }  
+        }
         /* Perform HTTP request to register user */
         performRegister();
     }
@@ -140,7 +132,6 @@ export default function Register() {
     /* Performs the HTTP Request to the backend to register the user. */
     const performRegister = async () => {
         try {
-            /* Perform POST request to register user */
             await axios.post("auth/register", {
                 username: username,
                 email: email,
@@ -165,134 +156,181 @@ export default function Register() {
         }
     }
 
-    /* Return react component */
     return (
         <div className="register">
             <div className="top">
                 <div className="wrapper">
-                    <img
+                    <motion.img
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5 }}
                         className="logo"
                         src={logo}
-                        alt=""
+                        alt="Titan Logo"
                     />
                     <Link to="/login" className="link">
-                        <button className="loginButton">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="loginButton"
+                        >
                             Sign In
-                        </button>
+                        </motion.button>
                     </Link>
                 </div>
             </div>
-            <div className="container" style={{ display: (showTerms) && "none" }}>
-                <h1>Ready to level up your fitness and nutrition journey?</h1>
-                <h2>Sign up for free.</h2>
-                <p>
-                    Create your account below.
-                </p>
 
-                <div className="input">
-                    <input
-                        type="email"
-                        placeholder="email"
-                        onChange={(e) => {
-                            setEmail(
-                                e.target.value
-                            )
-                        }}
-                        ref={emailRef}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                handleGetStarted(e);
-                            }
-                        }}
-                    />
-                    {!clickedGetStarted && ( // hide this button when user clicks on next
-                        <button
-                            className="registerButton"
-                            onClick={handleGetStarted}
-                        >Get Started</button>
-                    )}
-                </div>
-
-                {/* only display after using clicks get started */}
-                <div className="input"
-                 style={{ visibility: !clickedGetStarted && "hidden" }}
-                 >
-                    <input
-                        type="phone number"
-                        placeholder="phone number"
-                        onChange={(e) => {
-                            setPhone(
-                                e.target.value
-                            )
-                        }}
-                        onKeyDown={(e) => e.key === 'Enter' && handleGetStarted(e)}
-                    />
-                    <button onClick={handleRegister} style={{ visibility: "hidden" }}>Sign Up</button>
-                </div>
-
-                { // only display when user clicks get started
-                    <form
-                        className="input"
-                        style={{ visibility: !clickedGetStarted && "hidden" }}
+            <AnimatePresence>
+                {!showTerms && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.5 }}
+                        className="container"
                     >
-                        <input
-                            type="username"
-                            placeholder="username"
-                            onChange={(e) => setUsername(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleRegister(e)}
-                        />
-                        <input
-                            type="password"
-                            placeholder="password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleRegister(e)}
-                        />
-                        <button className="termsButton" onClick={handleShowTerms}>Terms and Conditions</button>
-                    </form>
-                    
-                }
-                { // submit button, only shown when use clicks get started
-                    <form
-                        className="input"
-                        style={{ visibility: !clickedGetStarted && "hidden" }}
+                        <h1>Ready to level up your fitness journey?</h1>
+                        <h2>Sign up for free.</h2>
+                        <p>Create your account below.</p>
+
+                        <div className="input">
+                            <input
+                                type="email"
+                                placeholder="email address"
+                                onChange={(e) => setEmail(e.target.value)}
+                                ref={emailRef}
+                                onKeyDown={(e) => e.key === 'Enter' && handleGetStarted(e)}
+                            />
+                            {!clickedGetStarted && (
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="registerButton"
+                                    onClick={handleGetStarted}
+                                >
+                                    Get Started
+                                </motion.button>
+                            )}
+                        </div>
+
+                        <AnimatePresence>
+                            {clickedGetStarted && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "auto" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="input-group"
+                                    style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                                >
+                                    <div className="input">
+                                        <input
+                                            type="text"
+                                            placeholder="phone number"
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleRegister(e)}
+                                        />
+                                    </div>
+                                    <div className="input">
+                                        <input
+                                            type="text"
+                                            placeholder="username"
+                                            onChange={(e) => setUsername(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleRegister(e)}
+                                        />
+                                    </div>
+                                    <div className="input">
+                                        <input
+                                            type="password"
+                                            placeholder="password"
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleRegister(e)}
+                                        />
+                                    </div>
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className="termsButton"
+                                        onClick={handleShowTerms}
+                                    >
+                                        Terms and Conditions
+                                    </motion.button>
+
+                                    <div style={{ marginTop: '24px' }}>
+                                        <motion.button
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="registerButton"
+                                            onClick={handleRegister}
+                                            style={{ width: '200px' }}
+                                        >
+                                            Sign Up
+                                        </motion.button>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <AnimatePresence>
+                            {!isValidCredentials && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 10 }}
+                                    className="errorMessage"
+                                >
+                                    <p>{errorMessage}</p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Terms and Conditions Modal */}
+            <AnimatePresence>
+                {showTerms && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="termsForm"
                     >
-                        <button className="registerButton" onClick={handleRegister}>Sign Up</button>
-                        
-                    </form>
-                    
-                }
-
-                { // error message if user enters invalid email regex or credentials already taken
-                    <div className="errorMessage">
-                        <p style={{ visibility: (isValidCredentials) && "hidden" }}>
-                            {errorMessage}
-                        </p>
-                    </div>
-                }
-            </div>
-
-            {/* Chunk representing terms and conditions */}
-            {
-                <div className="termsForm" style={{ visibility: (!showTerms) && "hidden" }}>
-                    <div className="termsContainer">
-                        <form>
-                            <h1>Terms and Conditions</h1>
-                            <textarea readOnly value={"No terms and conditions currently..."} className="terms-textarea"></textarea>
-                            <span className="checkboxContainer">
-
-                                <input
-                                    type="checkbox"
-                                    checked={termsAgreed}
-                                    onChange={handleAgreeTerms}
+                        <motion.div
+                            initial={{ scale: 0.8 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0.8 }}
+                            className="termsContainer"
+                        >
+                            <form>
+                                <h1>Terms and Conditions</h1>
+                                <textarea
+                                    readOnly
+                                    value={"No terms and conditions currently..."}
+                                    className="terms-textarea"
                                 />
-                                 {"I have read and agreed to the terms and conditions."}
-                            </span>
-                            
-                            <button className="backButton" onClick={handleShowTerms}>Back</button>
-                        </form>
-                    </div>
-                </div>
-            }
+                                <span className="checkboxContainer">
+                                    <input
+                                        type="checkbox"
+                                        checked={termsAgreed}
+                                        onChange={handleAgreeTerms}
+                                    />
+                                    I have read and agreed to the terms and conditions.
+                                </span>
+
+                                <motion.button
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    className="backButton"
+                                    onClick={handleShowTerms}
+                                >
+                                    Back
+                                </motion.button>
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }
